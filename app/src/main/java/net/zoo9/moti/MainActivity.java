@@ -47,8 +47,15 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                String goals = "이를 잘 닦기\n엄마 심부름 잘 하기\n5시 전에 집에 오기";
+                Snackbar snackbar = Snackbar.make(view, goals, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null);
+
+                View snackbarView = snackbar.getView();
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setMaxLines(3);  // show multiple line
+
+                snackbar.show();
             }
         });
     }
