@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Moti</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_create_board">CreateBoardActivity</string>
+    <string name="title_activity_delete_board">DeleteBoardActivity</string>
+    <string name="title_activity_manage_boards">ManageBoardsActivity</string>
 </resources>
