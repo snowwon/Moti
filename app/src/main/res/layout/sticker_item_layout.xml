@@ -4,6 +4,12 @@
     android:layout_height="70dp" android:background="@drawable/sticker_clicked"
     android:id="@+id/sticker_background" android:layout_margin="3dp">
 
+
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/ic_sentiment_satisfied_white_48dp"/>-->
+
     <TextView android:id="@+id/txt_label_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
