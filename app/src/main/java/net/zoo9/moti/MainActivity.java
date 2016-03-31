@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -21,7 +25,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CreateNewBoardFragment.NewBoardFragmentListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +62,13 @@ public class MainActivity extends AppCompatActivity {
                 snackbar.show();
             }
         });
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        CreateNewBoardFragment createNewBoardFragment = new CreateNewBoardFragment();
+        createNewBoardFragment.show(fragmentManager, "createNewBoardFragment");
+
     }
+
 
     private List<Sticker> getStikcers() {
         LinkedList<Sticker> stickers = new LinkedList<>();
@@ -97,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    // After creating new Dialog, update Main Board Page.
+    @Override
+    public void reflectNewBoardInfo(DialogFragment dialogFragment, int idOfNewBoard) {
+        Snackbar.make(this.getCurrentFocus(), "Update New Board", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     private final static class StickerViewHolder extends RecyclerView.ViewHolder {
