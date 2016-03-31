@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,9 +13,55 @@
     tools:context="net.zoo9.moti.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <LinearLayout android:id="@+id/upper_zone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.CardView
+            card_view:cardCornerRadius="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp" android:padding="10dp">
+            <RelativeLayout android:id="@+id/board_basic_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:padding="5dp"
+                android:layout_centerHorizontal="true" android:background="#3498DB">
+
+                <LinearLayout android:id="@+id/user_info_container"
+                    android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:padding="5dp">
+
+                    <ImageView android:id="@+id/user_picture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:src="@drawable/ic_sentiment_satisfied_white_48dp"/>
+
+                    <TextView android:id="@+id/user_name" android:gravity="center_horizontal"
+                        android:textColor="#ffffff"
+                        android:layout_width="match_parent" android:layout_marginTop="7dp"
+                        android:layout_height="wrap_content" android:text="최운용"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/prize_info"
+                    android:orientation="vertical" android:layout_toRightOf="@id/user_info_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginLeft="10dp">
+                    <TextView android:layout_marginBottom="5dp" android:layout_marginTop="5dp"
+                        android:textColor="#aaaaaa"
+                        android:layout_width="wrap_content" android:textSize="12dp"
+                        android:layout_height="wrap_content" android:text="목표를 달성하면.."/>
+                    <TextView android:padding="7dp" android:textColor="#ffffff"
+                        android:layout_width="wrap_content" android:gravity="center" android:textSize="16dp"
+                        android:layout_height="match_parent" android:text="5만원 짜리 기간틱을 사주기로 합니다."/>
+                </LinearLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView android:id="@+id/achieve_board_container"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" android:padding="7dp"
+        android:layout_below="@id/upper_zone">
     </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
