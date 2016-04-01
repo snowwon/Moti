@@ -11,17 +11,12 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:text="칭찬 보드가 없습니다.\n새로 칭찬 보드를 만드시겠습니까?"/>
+        android:layout_height="wrap_content" android:text="Moti에 오신 것을 환영합니다.\n\n칭찬 스티커로 우리 아이의 바른 습관을 만들어주세요."/>
 
-    <GridLayout android:orientation="horizontal"
-        android:layout_width="fill_parent" android:columnCount="2"
-        android:layout_height="wrap_content" android:layout_marginTop="20dp" >
-        <Button android:layout_gravity="fill|right" android:layout_columnWeight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:text="생 성"/>
-        <Button android:layout_gravity="fill|left" android:layout_columnWeight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:text="취 소"/>
-    </GridLayout>
+
+    <Button android:id="@+id/create_board_button_at_intro" android:layout_gravity="center_horizontal" android:layout_marginTop="20dp"
+        android:layout_width="wrap_content" android:background="@color/colorPrimary"
+        android:paddingLeft="20dp" android:paddingRight="20dp" android:textColor="#ffffff"
+        android:layout_height="wrap_content" android:text="칭찬 스티커판 만들기"/>
 
 </LinearLayout>

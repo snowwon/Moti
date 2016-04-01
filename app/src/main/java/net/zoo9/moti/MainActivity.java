@@ -109,10 +109,9 @@ public class MainActivity extends AppCompatActivity implements CreateNewBoardFra
         }
     }
 
-    // After creating new Dialog, update Main Board Page.
     @Override
-    public void reflectNewBoardInfo(DialogFragment dialogFragment, int idOfNewBoard) {
-        Snackbar.make(this.getCurrentFocus(), "Update New Board", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    public void goToCreateBoardActivity() {
+        startActivity(new Intent(this, CreateBoardActivity.class));
     }
 
     private final static class StickerViewHolder extends RecyclerView.ViewHolder {
