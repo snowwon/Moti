@@ -5,8 +5,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 public class CreateBoardActivity extends AppCompatActivity {
 
@@ -22,6 +24,16 @@ public class CreateBoardActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+        Button setGoalsButton = (Button)findViewById(R.id.btn_set_goals);
+        setGoalsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("todo", "I need to pop up the goal list and let user select what they wanted.");
+            }
+        });
+
+
     }
 
     @Override
