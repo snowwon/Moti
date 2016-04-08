@@ -30,7 +30,7 @@
             android:id="@+id/edit_text_sticker_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
+            android:inputType="numberDecimal"
             android:hint="스티커 개수를 넣어주세요" />
     </android.support.design.widget.TextInputLayout>
 

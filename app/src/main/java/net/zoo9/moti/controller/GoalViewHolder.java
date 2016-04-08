@@ -1,4 +1,4 @@
-package net.zoo9.moti.model;
+package net.zoo9.moti.controller;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
