@@ -46,7 +46,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
     @Override
     public void onBindViewHolder(GoalViewHolder holder, int position) {
         Goal item = goalList.get(position);
-        holder.label.setText(item.goal);
+        holder.label.setText(item.goal_desc);
     }
 
     @Override
@@ -58,6 +58,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
     }
 
     private boolean isSelected(int position) {
+        if (position == 1) return true;
         Integer selectedPos = new Integer(position);
         return this.selected.contains(selectedPos);
     }

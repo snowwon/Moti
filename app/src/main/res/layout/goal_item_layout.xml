@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:background="@android:color/white">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:background="@color/cardview_dark_background" android:padding="6dp" >
 
-    <TextView android:id="@+id/text_goal_desc"
-        android:layout_width="match_parent"
+    <ImageView android:id="@+id/icon_unclicked"
+        android:layout_width="wrap_content" android:layout_alignParentLeft="true"
+        android:layout_height="match_parent" android:src="@drawable/ic_radio_button_unchecked_white_24dp"/>
+
+    <TextView android:id="@+id/text_goal_desc" android:layout_toRightOf="@id/icon_unclicked"
+        android:layout_width="match_parent" android:paddingLeft="10dp"
         android:layout_height="match_parent"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         />
-</LinearLayout>
+</RelativeLayout>

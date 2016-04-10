@@ -8,7 +8,9 @@
     <TextView android:id="@+id/text_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:text="직접 입력해 주시거나, 목록에서 최대 3개 까지 칭찬 주제를 선택해 주세요."
-        android:padding="15dp"/>
+        android:padding="5dp" android:layout_marginBottom="7dp"/>
+
+
 
     <LinearLayout android:orientation="vertical"
         android:layout_width="wrap_content"
@@ -16,13 +18,15 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-            <Button android:layout_alignParentRight="true"
+            android:layout_height="wrap_content">
+
+            <Button android:id="@+id/btn_add_new_goal"
+                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text="추 가"/>
+
             <android.support.design.widget.TextInputLayout
-                android:layout_centerInParent="true"
-                android:layout_marginTop="15dp"
+                android:layout_toLeftOf="@id/btn_add_new_goal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -32,26 +36,33 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:hint="직접 입력하기" />
+
             </android.support.design.widget.TextInputLayout>
+
         </RelativeLayout>
 
-        <LinearLayout android:orientation="horizontal"
+
+        <android.support.v7.widget.RecyclerView android:id="@+id/recycle_goals"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp" android:padding="10dp" >
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <Button android:id="@+id/btn_close_goals_dialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="취 소" />
             <Button android:id="@+id/btn_update_parent_window"
+                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text="완 료" />
-        </LinearLayout>
+
+            <Button android:id="@+id/btn_close_goals_dialog"
+                android:layout_toLeftOf="@id/btn_update_parent_window"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="취 소" />
+        </RelativeLayout>
     </LinearLayout>
 
-    <!--<android.support.v7.widget.RecyclerView android:id="@+id/achieve_board_container" android:background="#333333"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="match_parent" android:padding="7dp"-->
-        <!--android:layout_below="@id/text_description">-->
-    <!--</android.support.v7.widget.RecyclerView>-->
+
 
 
 </LinearLayout>

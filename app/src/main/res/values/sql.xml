@@ -7,24 +7,24 @@
             pic_path text
         );
 
-        create table boards {
+        create table boards (
             _id integer primary key autoincrement,
             assignee_id integer not null,
             prize text not null,
             number_of_stickers integer not null,
             current_pos_of_sticker integer
-        };
+        );
 
-        create table goals {
+        create table goals (
             _id integer primary key autoincrement,
             goal text not null
-        };
+        );
 
-        sticker_histories {
+        create table sticker_histories (
             board_id integer not null,
             position integer not null,
             check_date date not null
-        };
+        );
 
         insert into goals(goal) values ("스마트폰을 정해진 시간만 사용해요.");
         insert into goals(goal) values ("텔레비전을 멀리 떨어진 곳에서 봐요.");
