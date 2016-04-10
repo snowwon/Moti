@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="moti.db.create">
+    <string name="moti_db_create">
         create table assignees (
             _id integer primary key autoincrement,
             name text not null,
@@ -26,16 +26,16 @@
             check_date date not null
         );
 
-        insert into goals(goal) values ("스마트폰을 정해진 시간만 사용해요.");
-        insert into goals(goal) values ("텔레비전을 멀리 떨어진 곳에서 봐요.");
-        insert into goals(goal) values ("집에 오면 바로 손을 씻어요");
-        insert into goals(goal) values ("식사 후 야이를 잘 해요");
-        insert into goals(goal) values ("한 자리에 바르게 앉아서 식사해요.");
-        insert into goals(goal) values ("음식을 가지리 않고 골고루 먹어요.");
-        insert into goals(goal) values ("식사 준비와 식사 후 정리를 도와요.");
+        insert into goals(goal) values (\'스마트폰을 정해진 시간만 사용해요.\');
+        insert into goals(goal) values (\'텔레비전을 멀리 떨어진 곳에서 봐요.\');
+        insert into goals(goal) values (\'집에 오면 바로 손을 씻어요\');
+        insert into goals(goal) values (\'식사 후 야이를 잘 해요\');
+        insert into goals(goal) values (\'한 자리에 바르게 앉아서 식사해요.\');
+        insert into goals(goal) values (\'음식을 가지리 않고 골고루 먹어요.\');
+        insert into goals(goal) values (\'식사 준비와 식사 후 정리를 도와요.\');
     </string>
 
-    <string name="moti.db.drop.tables">
+    <string name="moti_db_drop_tables">
         drop table if exists assignees;
         drop table if exists boards;
         drop table if exists goals;
