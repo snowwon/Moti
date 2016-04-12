@@ -41,4 +41,20 @@ public class GoalManager {
         cursor.close();
         return defaultGoals;
     }
+
+    public Goal addNewGoal(String newGoalText) {
+        MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
+        String sql = "insert into goals(goal) values (\'" + newGoalText + "\');";
+        mySQLiteHandler.executeSQL(sql);
+
+        Cursor cursor = mySQLiteHandler.select("select * from goals where goal = ?", new String[]{newGoalText});
+        Goal newGoal = null;
+        while (cursor.moveToNext()) {
+            int goalId = cursor.getInt(0);
+            String goalDesc = cursor.getString(1);
+
+            newGoal = new Goal(goalId, goalDesc);
+        }
+        return newGoal;
+    }
 }

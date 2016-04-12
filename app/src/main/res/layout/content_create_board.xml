@@ -52,7 +52,7 @@
         android:layout_marginTop="20dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <TextView android:id="@+id/list_of_goals"
             android:layout_width="fill_parent" android:layout_margin="10dp"
             android:layout_height="wrap_content" android:text="칭찬 주제를 추가해 주세요"/>
     </android.support.v7.widget.CardView>

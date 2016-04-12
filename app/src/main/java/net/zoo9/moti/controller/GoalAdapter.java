@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import net.zoo9.moti.R;
 import net.zoo9.moti.model.Goal;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ import java.util.Set;
 public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
     List<Goal> goalList = null;
     Set<Integer> selected = null;
+    final static int LIMIT_SELECTED_GOALS = 3;
 
     private int itemLayout;
 
@@ -33,14 +35,14 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
         switch (viewType) {
             case 0:
                 View clickedView = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
-                return new GoalViewHolder(clickedView);
+                return new GoalViewHolder(clickedView, this);
             case 1:
                 View unclickedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.goal_item_layout_clicked, parent, false);
-                return new GoalViewHolder(unclickedView);
+                return new GoalViewHolder(unclickedView, this);
         }
 
         View defaultView = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
-        return new GoalViewHolder(defaultView);
+        return new GoalViewHolder(defaultView, this);
     }
 
     @Override
@@ -58,13 +60,17 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
     }
 
     private boolean isSelected(int position) {
-        if (position == 1) return true;
         Integer selectedPos = new Integer(position);
         return this.selected.contains(selectedPos);
     }
 
+    public int getSizeOfSelectedGoals() {
+        return this.selected.size();
+    }
+
     public void setClicked(int position) {
         this.selected.add(new Integer(position));
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -73,5 +79,32 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
             return goalList.size();
         }
         return 0;
+    }
+
+    public void addNewGoalWithSelected(Goal newGoal) {
+        goalList.add(newGoal);
+        int position = goalList.indexOf(newGoal);
+        this.selected.add(position);
+    }
+
+    public ArrayList<String> getSelectedGoalList() {
+        ArrayList<String> selectedGoalList = new ArrayList<String>();
+
+        for (Integer selectedPos : selected) {
+            selectedGoalList.add(goalList.get(selectedPos).goal_desc);
+        }
+
+        return selectedGoalList;
+    }
+
+    public void toggleSelected(int position) {
+        Integer selectedPosition = new Integer(position);
+        if (selected.contains(selectedPosition)) {
+            selected.remove(selectedPosition);
+        } else {
+            selected.add(selectedPosition);
+        }
+//        this.selected.add(new Integer(position));
+        this.notifyDataSetChanged();
     }
 }

@@ -7,10 +7,12 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -40,6 +42,8 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
             }
         });
 
+
+
     }
 
     @Override
@@ -53,9 +57,6 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
 
     @Override
     public void setGoals(List<String> goals) {
-        Log.d("moti","update the details :");
-        for (String goal : goals) {
-            Log.d("moti", goal);
-        }
+        ((TextView)findViewById(R.id.list_of_goals)).setText(TextUtils.join("\n", goals.toArray()));
     }
 }
