@@ -73,12 +73,14 @@
         android:layout_width="fill_parent" android:columnCount="2"
         android:layout_height="wrap_content" android:layout_marginTop="20dp" android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp">
-        <Button android:layout_gravity="fill|right" android:layout_columnWeight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:text="생 성"/>
-        <Button android:layout_gravity="fill|left" android:layout_columnWeight="1"
+        <Button android:id="@+id/btn_cancel"
+            android:layout_gravity="fill|left" android:layout_columnWeight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:text="취 소"/>
+        <Button android:id="@+id/btn_create_board"
+            android:layout_gravity="fill|right" android:layout_columnWeight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="생 성"/>
     </GridLayout>
 
 </LinearLayout>

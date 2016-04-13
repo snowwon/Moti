@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="moti_db_create">
-        create table assignees (
-            _id integer primary key autoincrement,
-            name text not null,
-            pic_path text
-        );
-
         create table boards (
             _id integer primary key autoincrement,
-            assignee_id integer not null,
+            assignee text not null,
+            goals text not null,
             prize text not null,
             number_of_stickers integer not null,
             current_pos_of_sticker integer
@@ -22,7 +17,6 @@
 
         create table sticker_histories (
             board_id integer not null,
-            position integer not null,
             check_date date not null
         );
 

@@ -4,20 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
+
+import net.zoo9.moti.model.Board;
+import net.zoo9.moti.model.BoardManager;
+import net.zoo9.moti.model.StickerHistoryManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,23 +28,58 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements CreateNewBoardFragment.NewBoardFragmentListener {
+    private Board board = null;
+    private  StickerRecycleAdapter stickerRecyclerAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("환영합니다");
 
+        Intent intent = getIntent();
+        int board_id = -1;
+        if (intent != null) {
+            board_id = intent.getIntExtra("board_id", -1);
+        }
 
+        Log.d("unja", "board_id :"+board_id);
+        if (board_id >= 1) {
+            board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id);
+            Log.d("unja", board.listOfGoals+":"+board.prize+":"+board.userName+":"+board.stickerSize);
+        }
+        // FYI, the id of dummy board is -1.
+        if (board == null) board = getDummyBoard();
+        Log.d("unja", "board id:"+board.boardId+", details:"+board);
+
+        // initialBoardUI()
+        ((TextView)findViewById(R.id.user_name)).setText(board.userName);
+        ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
-        gridLayoutManager.scrollToPosition(0);
+        gridLayoutManager.scrollToPosition(board.stickerPos);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        List<Sticker> stickers = getStikcers();
+        List<Sticker> stickers = null;
+
+        if (board.boardId == -1) {
+            // dummy case
+            stickers = getStickersWithDates(null, board.stickerSize);
+        } else {
+            List<Date> checkedDates = null;
+            try {
+                checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
+                stickers = getStickersWithDates(checkedDates, board.stickerSize);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                stickers = getStickersWithDates(null, board.stickerSize);
+            }
+        }
+
         StickerRecycleAdapter stickerRecyclerAdapter = new StickerRecycleAdapter(stickers, R.layout.sticker_item_layout);
 
         recyclerView.setAdapter(stickerRecyclerAdapter);
@@ -51,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements CreateNewBoardFra
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String goals = "이를 잘 닦기\n엄마 심부름 잘 하기\n5시 전에 집에 오기";
+                String goals = loadGoals();
+                Log.d("unja", "goals: " + goals);
                 Snackbar snackbar = Snackbar.make(view, goals, Snackbar.LENGTH_LONG)
                         .setAction("Action", null);
 
@@ -63,38 +101,49 @@ public class MainActivity extends AppCompatActivity implements CreateNewBoardFra
             }
         });
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        CreateNewBoardFragment createNewBoardFragment = new CreateNewBoardFragment();
-        createNewBoardFragment.show(fragmentManager, "createNewBoardFragment");
+        if (board.boardId == -1) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            CreateNewBoardFragment createNewBoardFragment = new CreateNewBoardFragment();
+            createNewBoardFragment.show(fragmentManager, "createNewBoardFragment");
+        }
 
     }
 
+    private String loadGoals() {
+        return board.listOfGoals;
+    }
 
-    private List<Sticker> getStikcers() {
+    private Board getDummyBoard() {
+        Board dummyBoard = new Board();
+        dummyBoard.boardId = -1;
+        dummyBoard.prize = "터닝매카드 3개 사주기";
+        dummyBoard.stickerSize = 23;
+        dummyBoard.userName = "교남이";
+        dummyBoard.listOfGoals = "양치 잘 하기\n엄마 심부름 하루에 한 번\n숙제는 저녁 식사 전에 마치기";
+        dummyBoard.stickerPos = 4;
+        return dummyBoard;
+    }
+
+
+    private List<Sticker> getStickersWithDates(List<Date> dates, int stickerSize) {
         LinkedList<Sticker> stickers = new LinkedList<>();
-        stickers.add(new Sticker(createDate(2015, 12, 20) ));
-        stickers.add(new Sticker(createDate(2015, 12, 21)));
-        stickers.add(new Sticker(createDate(2015, 12, 22)));
-        stickers.add(new Sticker(createDate(2015, 12, 23) ));
-        stickers.add(new Sticker(createDate(2015, 12, 24)));
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
-        stickers.add(new Sticker());
+
+        if (dates == null || dates.size() == 0) {
+            stickers.add(new Sticker(createDate(2015, 12, 20)));
+            stickers.add(new Sticker(createDate(2015, 12, 21)));
+            stickers.add(new Sticker(createDate(2015, 12, 22)));
+            stickers.add(new Sticker(createDate(2015, 12, 23)));
+            stickers.add(new Sticker(createDate(2015, 12, 24)));
+        } else {
+            for (Date checkedDate : dates) {
+                Log.d("unja", "date :"+checkedDate);
+                stickers.add(new Sticker(checkedDate));
+            }
+        }
+        int uncheckedItemLength = stickerSize - stickers.size();
+        for (int i = 0; i < uncheckedItemLength; i++) {
+            stickers.add(new Sticker());
+        }
         return stickers;
     }
 
@@ -152,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements CreateNewBoardFra
             Sticker item = stickers.get(position);
             StringBuffer label = new StringBuffer();
             if (item.checkedDate != null) {
-                label.append("Great !!").append("\n");
+                label.append("Good").append("\n");
                 SimpleDateFormat sm = new SimpleDateFormat("mm/dd");
                 label.append(sm.format(item.checkedDate));
 //                label.append(Integer.toString(position+1));

@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
+import net.zoo9.moti.model.Board;
+
 
 public class CreateNewBoardFragment extends DialogFragment {
 

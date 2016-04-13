@@ -50,7 +50,8 @@
                         android:textColor="#aaaaaa"
                         android:layout_width="wrap_content" android:textSize="12dp"
                         android:layout_height="wrap_content" android:text="목표를 달성하면.."/>
-                    <TextView android:padding="7dp" android:textColor="#ffffff"
+                    <TextView android:id="@+id/textview_prize"
+                        android:padding="7dp" android:textColor="#ffffff"
                         android:layout_width="wrap_content" android:gravity="center" android:textSize="16dp"
                         android:layout_height="match_parent" android:text="5만원 짜리 기간틱을 사주기로 합니다."/>
                 </LinearLayout>
