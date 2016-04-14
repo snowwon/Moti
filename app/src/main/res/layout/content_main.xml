@@ -21,41 +21,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="7dp" android:padding="10dp">
-            <RelativeLayout android:id="@+id/board_basic_info"
+            <LinearLayout android:id="@+id/prize_info"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:padding="5dp"
-                android:layout_centerHorizontal="true" android:background="#3498DB">
+                android:layout_height="wrap_content" android:layout_marginLeft="10dp">
 
-                <LinearLayout android:id="@+id/user_info_container"
-                    android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:padding="5dp">
+                <TextView android:id="@+id/textview_prize"
+                    android:textStyle="bold"  android:textSize="18dp"
+                    android:padding="7dp" android:textColor="@color/colorPrimary"
+                    android:layout_width="wrap_content" android:gravity="center"
+                    android:layout_height="wrap_content" android:text="5만원 짜리 기간틱을 사주기로 합니다."/>
 
-                    <ImageView android:id="@+id/user_picture"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:src="@drawable/ic_sentiment_satisfied_white_48dp"/>
+                <TextView android:id="@+id/textview_goals"
+                    android:layout_marginBottom="9dp" android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_width="wrap_content" android:textSize="12dp" android:lineSpacingExtra="3dip"
+                    android:layout_height="wrap_content" android:text="세부적인 엄마와의 약속.."/>
 
-                    <TextView android:id="@+id/user_name" android:gravity="center_horizontal"
-                        android:textColor="#ffffff"
-                        android:layout_width="match_parent" android:layout_marginTop="7dp"
-                        android:layout_height="wrap_content" android:text="최운용"/>
-                </LinearLayout>
-
-                <LinearLayout android:id="@+id/prize_info"
-                    android:orientation="vertical" android:layout_toRightOf="@id/user_info_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:layout_marginLeft="10dp">
-                    <TextView android:layout_marginBottom="5dp" android:layout_marginTop="5dp"
-                        android:textColor="#aaaaaa"
-                        android:layout_width="wrap_content" android:textSize="12dp"
-                        android:layout_height="wrap_content" android:text="목표를 달성하면.."/>
-                    <TextView android:id="@+id/textview_prize"
-                        android:padding="7dp" android:textColor="#ffffff"
-                        android:layout_width="wrap_content" android:gravity="center" android:textSize="16dp"
-                        android:layout_height="match_parent" android:text="5만원 짜리 기간틱을 사주기로 합니다."/>
-                </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>
 

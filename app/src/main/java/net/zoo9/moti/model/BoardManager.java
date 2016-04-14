@@ -49,6 +49,7 @@ public class BoardManager {
             board.boardId = cursor.getInt(cursor.getColumnIndex("_id"));
             board.userName = cursor.getString(cursor.getColumnIndex("assignee"));
             board.prize = cursor.getString(cursor.getColumnIndex("prize"));
+            board.listOfGoals = cursor.getString(cursor.getColumnIndex("goals"));
             board.stickerPos = cursor.getInt(cursor.getColumnIndex("current_pos_of_sticker"));
             board.stickerSize = cursor.getInt(cursor.getColumnIndex("number_of_stickers"));
         }

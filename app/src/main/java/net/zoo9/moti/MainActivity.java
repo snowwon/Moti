@@ -35,29 +35,30 @@ public class MainActivity extends AppCompatActivity implements CreateNewBoardFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("환영합니다");
-
         Intent intent = getIntent();
         int board_id = -1;
         if (intent != null) {
             board_id = intent.getIntExtra("board_id", -1);
         }
 
-        Log.d("unja", "board_id :"+board_id);
         if (board_id >= 1) {
             board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id);
-            Log.d("unja", board.listOfGoals+":"+board.prize+":"+board.userName+":"+board.stickerSize);
         }
         // FYI, the id of dummy board is -1.
         if (board == null) board = getDummyBoard();
-        Log.d("unja", "board id:"+board.boardId+", details:"+board);
+        Log.d("unja", "Board: " + board.boardId + ":" + board.listOfGoals + ":" + board.prize + ":" + board.userName + ":" + board.stickerSize);
+
 
         // initialBoardUI()
-        ((TextView)findViewById(R.id.user_name)).setText(board.userName);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        String titleWithNameAndStatus = board.userName + " ( "+board.stickerPos + " / "+board.stickerSize+" )";
+        getSupportActionBar().setTitle(titleWithNameAndStatus);
+
         ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
+        Log.d("unja", "Goals: "+board.listOfGoals );
+        ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
@@ -88,16 +89,7 @@ public class MainActivity extends AppCompatActivity implements CreateNewBoardFra
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String goals = loadGoals();
-                Log.d("unja", "goals: " + goals);
-                Snackbar snackbar = Snackbar.make(view, goals, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null);
-
-                View snackbarView = snackbar.getView();
-                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setMaxLines(3);  // show multiple line
-
-                snackbar.show();
+                Log.d("unja", "add new sticker!!");
             }
         });
 
