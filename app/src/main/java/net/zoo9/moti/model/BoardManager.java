@@ -27,8 +27,8 @@ public class BoardManager {
     public int createBoard(String userName, Integer stickerSize, String listOfGoals, String prize) {
         MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
 
-        String sql = "insert into boards(assignee, goals, prize, number_of_stickers, current_pos_of_sticker) values (\'"
-                + userName + "\', \'"+listOfGoals+"\', \'"+prize+"\', "+stickerSize+", 0);";
+        String sql = "insert into boards(assignee, goals, prize, number_of_stickers, current_pos_of_sticker, start_date) values (\'"
+                + userName + "\', \'"+listOfGoals+"\', \'"+prize+"\', "+stickerSize+", 0, date(\'now\'));";
         Log.d("unja", "sql: "+sql);
         mySQLiteHandler.executeSQL(sql);
 
@@ -55,5 +55,26 @@ public class BoardManager {
         }
 
         return  board;
+    }
+
+    /**
+     *
+     * @return if there's no data activated, return -1. Otherwise we will return the id of current board.
+     */
+    public int getCurrentBoardId() {
+        MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
+        Cursor cursor = mySQLiteHandler.select("select _id from boards where end_date = null order by _id desc;", null);
+
+
+        if (cursor.moveToFirst()) {
+            int boardId =  cursor.getInt(cursor.getColumnIndex("_id"));
+            if (boardId >= 0) {
+                return boardId;
+            } else {
+                return -1;
+            }
+        }
+
+        return -1;
     }
 }

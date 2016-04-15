@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements CreateNewBoardFragment.NewBoardFragmentListener {
+public class MainActivity extends AppCompatActivity  {
     private Board board = null;
     private  StickerRecycleAdapter stickerRecyclerAdapter = null;
 
@@ -93,11 +93,6 @@ public class MainActivity extends AppCompatActivity implements CreateNewBoardFra
             }
         });
 
-        if (board.boardId == -1) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            CreateNewBoardFragment createNewBoardFragment = new CreateNewBoardFragment();
-            createNewBoardFragment.show(fragmentManager, "createNewBoardFragment");
-        }
 
     }
 
@@ -148,11 +143,6 @@ public class MainActivity extends AppCompatActivity implements CreateNewBoardFra
             e.printStackTrace();
             return null;
         }
-    }
-
-    @Override
-    public void goToCreateBoardActivity() {
-        startActivity(new Intent(this, CreateBoardActivity.class));
     }
 
     private final static class StickerViewHolder extends RecyclerView.ViewHolder {

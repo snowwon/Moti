@@ -3,6 +3,8 @@
     <string name="moti_db_create">
         create table boards (
             _id integer primary key autoincrement,
+            start_date date not null,
+            end_date date,
             assignee text not null,
             goals text not null,
             prize text not null,
