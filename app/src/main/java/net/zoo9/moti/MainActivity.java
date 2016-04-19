@@ -4,8 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.zoo9.moti.model.Board;
 import net.zoo9.moti.model.BoardManager;
@@ -31,8 +28,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
-    private Board board = null;
-    private  StickerRecycleAdapter stickerRecyclerAdapter = null;
+    private static Board board = null;
+    private StickerRecycleAdapter stickerRecyclerAdapter = null;
     private int board_id = -1;
 
     @Override
@@ -58,8 +55,7 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        String titleWithNameAndStatus = board.userName + " ( "+board.stickerPos + " / "+board.stickerSize+" )";
-        getSupportActionBar().setTitle(titleWithNameAndStatus);
+        updateTitleBasedOnCurrentBoard();
 
         // set prize and list of goals in the above of the board.
         ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
@@ -81,8 +77,8 @@ public class MainActivity extends AppCompatActivity  {
             e.printStackTrace();
         }
 
-        final StickerRecycleAdapter stickerRecyclerAdapter = new StickerRecycleAdapter(stickers, R.layout.sticker_item_layout);
 
+        stickerRecyclerAdapter = new StickerRecycleAdapter(stickers, R.layout.sticker_item_layout);
         recyclerView.setAdapter(stickerRecyclerAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -98,6 +94,11 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
+    }
+
+    private void updateTitleBasedOnCurrentBoard() {
+        String titleWithNameAndStatus = board.userName + " ( "+board.stickerPos + " / "+board.stickerSize+" )";
+        getSupportActionBar().setTitle(titleWithNameAndStatus);
     }
 
     private String loadGoals() {
@@ -130,17 +131,50 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
-    private final static class StickerViewHolder extends RecyclerView.ViewHolder {
+    private final class StickerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView label;
 
         public StickerViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             label = (TextView) itemView.findViewById(R.id.txt_label_item);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if ((getAdapterPosition() + 1) == board.stickerPos) {
+                processRemoveTheLastSticker();
+            }
         }
     }
 
+    public void processRemoveTheLastSticker() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("스티커 제거")
+                .setMessage("붙였던 스티커를 제거하시겠습니까?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeTheLastStikcer();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void removeTheLastStikcer() {
+        board.stickerPos = board.stickerPos - 1;
+        StickerHistoryManager.getInstance(MainActivity.this).removeLastSticker(board_id);
+        BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
+        stickerRecyclerAdapter.stickers.set(board.stickerPos, new Sticker());
+        updateTitleBasedOnCurrentBoard();
+        stickerRecyclerAdapter.notifyDataSetChanged();
+    }
+
     private class StickerRecycleAdapter extends RecyclerView.Adapter<StickerViewHolder>{
-        private List<Sticker> stickers;
+        public List<Sticker> stickers;
         private int itemLayout;
 
         public StickerRecycleAdapter(List<Sticker> stickers, int itemLayout) {
@@ -207,6 +241,7 @@ public class MainActivity extends AppCompatActivity  {
             BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
             Log.d("unja", "Board's StickerPos: "+board.stickerPos);
             stickers.set(board.stickerPos - 1, new Sticker(new Date()));
+            updateTitleBasedOnCurrentBoard();
             notifyDataSetChanged();
         }
     }

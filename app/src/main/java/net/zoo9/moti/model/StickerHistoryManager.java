@@ -34,8 +34,15 @@ public class StickerHistoryManager {
 
 
 
-    public void removeLastSticker() {
+    public void removeLastSticker(int boardId) {
+        MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
+        Cursor cursor = mySQLiteHandler.select("select check_date, board_id from sticker_histories where board_id = ? order by check_date desc", new String[]{Integer.toString(boardId)});
+        cursor.moveToFirst();
+        String targetLastStickerCheckDate = cursor.getString(cursor.getColumnIndex("check_date"));
 
+        String deleteLastItemSQL = "delete from sticker_histories where board_id="+boardId+" and check_date=\'"+targetLastStickerCheckDate+"\'";
+        Log.d("unja", "sql string: "+deleteLastItemSQL);
+        mySQLiteHandler.executeSQL(deleteLastItemSQL);
     }
 
     public void addNewSticker(int boardId) {
