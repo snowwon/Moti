@@ -23,6 +23,12 @@ public class BoardManager {
         return singleInstance;
     }
 
+    public void updateStickerPosition(int board_id, int current_pos_of_sticker) {
+        MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
+        String sql = "update boards set current_pos_of_sticker = " + current_pos_of_sticker +
+                " where _id = "+board_id;
+        mySQLiteHandler.executeSQL(sql);
+    }
 
     public int createBoard(String userName, Integer stickerSize, String listOfGoals, String prize) {
         MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);

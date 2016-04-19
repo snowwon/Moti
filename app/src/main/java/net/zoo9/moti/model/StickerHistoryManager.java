@@ -2,6 +2,7 @@ package net.zoo9.moti.model;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +33,17 @@ public class StickerHistoryManager {
     }
 
 
+
     public void removeLastSticker() {
+
+    }
+
+    public void addNewSticker(int boardId) {
+        MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
+        String sqlForAddingNewSticker = "insert into sticker_histories (board_id, check_date) values (" +
+                boardId +", DATETIME('now'))";
+        mySQLiteHandler.executeSQL(sqlForAddingNewSticker);
+        mySQLiteHandler.close();
     }
 
     public List<Date> getStickerHistories(int boardId) throws ParseException {
@@ -42,8 +53,9 @@ public class StickerHistoryManager {
         List<Date> stickerDates = new ArrayList<Date>();
         while (cursor.moveToNext()) {
             Calendar t = new GregorianCalendar();
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.getDefault());
-            Date dt = sdf.parse(cursor.getString(0));
+            String checked_date = cursor.getString(cursor.getColumnIndex("check_date"));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            Date dt = sdf.parse(checked_date);
             stickerDates.add(dt);
         }
 

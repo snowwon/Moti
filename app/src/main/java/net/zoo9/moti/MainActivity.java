@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity  {
             e.printStackTrace();
         }
 
-        StickerRecycleAdapter stickerRecyclerAdapter = new StickerRecycleAdapter(stickers, R.layout.sticker_item_layout);
+        final StickerRecycleAdapter stickerRecyclerAdapter = new StickerRecycleAdapter(stickers, R.layout.sticker_item_layout);
 
         recyclerView.setAdapter(stickerRecyclerAdapter);
 
@@ -89,7 +89,11 @@ public class MainActivity extends AppCompatActivity  {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("unja", "add new sticker!!");
+                if (board_id >= 0) {
+                    stickerRecyclerAdapter.addNewSticker(board_id);
+                } else {
+                    Log.e("unja", "invalid board id : "+board_id);
+                }
             }
         });
 
@@ -165,7 +169,7 @@ public class MainActivity extends AppCompatActivity  {
             StringBuffer label = new StringBuffer();
             if (item.checkedDate != null) {
                 label.append("Good").append("\n");
-                SimpleDateFormat sm = new SimpleDateFormat("mm/dd");
+                SimpleDateFormat sm = new SimpleDateFormat("MM/dd");
                 label.append(sm.format(item.checkedDate));
             } else {
                 label.append(Integer.toString(position+1));
@@ -189,6 +193,15 @@ public class MainActivity extends AppCompatActivity  {
                 return 1;
             }
 
+        }
+
+        public void addNewSticker(int board_id) {
+            StickerHistoryManager.getInstance(MainActivity.this).addNewSticker(board_id);
+            board.stickerPos = board.stickerPos + 1;
+            BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
+            Log.d("unja", "Board's StickerPos: "+board.stickerPos);
+            stickers.set(board.stickerPos - 1, new Sticker(new Date()));
+            notifyDataSetChanged();
         }
     }
 
