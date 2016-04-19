@@ -157,6 +157,9 @@ public class MainActivity extends AppCompatActivity  {
                 case 1:
                     View unclickedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sticker_item_layout_unclicked, parent, false);
                     return new StickerViewHolder(unclickedView);
+                case 2:
+                    View lastItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sticker_item_layout_last, parent, false);
+                    return new StickerViewHolder(lastItemView);
             }
 
             View defaultView = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
@@ -185,14 +188,17 @@ public class MainActivity extends AppCompatActivity  {
 
         @Override
         public int getItemViewType(int position) {
-            if (stickers.get(position).checkedDate != null) {
-                // clicked sticker type
-                return 0;
+            if (position == board.stickerPos - 1) {
+                return 2;
             } else {
-                // un-clicked sticker type
-                return 1;
+                if (stickers.get(position).checkedDate != null) {
+                    // clicked sticker type
+                    return 0;
+                } else {
+                    // un-clicked sticker type
+                    return 1;
+                }
             }
-
         }
 
         public void addNewSticker(int board_id) {
