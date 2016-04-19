@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.zoo9.moti.model.Board;
 import net.zoo9.moti.model.BoardManager;
@@ -43,11 +44,12 @@ public class MainActivity extends AppCompatActivity  {
 
         if (board_id >= 1) {
             board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id);
+        } else {
+            // invalid case. Let the user see the board creation page.
+            Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
+            startActivity(intent);
+            finish();
         }
-        // FYI, the id of dummy board is -1.
-        if (board == null) board = getDummyBoard();
-        Log.d("unja", "Board: " + board.boardId + ":" + board.listOfGoals + ":" + board.prize + ":" + board.userName + ":" + board.stickerSize);
-
 
         // initialBoardUI()
         setContentView(R.layout.activity_main);
@@ -56,8 +58,8 @@ public class MainActivity extends AppCompatActivity  {
         String titleWithNameAndStatus = board.userName + " ( "+board.stickerPos + " / "+board.stickerSize+" )";
         getSupportActionBar().setTitle(titleWithNameAndStatus);
 
+        // set prize and list of goals in the above of the board.
         ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
-        Log.d("unja", "Goals: "+board.listOfGoals );
         ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
@@ -67,18 +69,13 @@ public class MainActivity extends AppCompatActivity  {
 
         List<Sticker> stickers = null;
 
-        if (board.boardId == -1) {
-            // dummy case
-            stickers = getStickersWithDates(null, board.stickerSize);
-        } else {
-            List<Date> checkedDates = null;
-            try {
-                checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
-                stickers = getStickersWithDates(checkedDates, board.stickerSize);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                stickers = getStickersWithDates(null, board.stickerSize);
-            }
+
+        List<Date> checkedDates = null;
+        try {
+            checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
+            stickers = getStickersWithDates(checkedDates, board.stickerSize);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         StickerRecycleAdapter stickerRecyclerAdapter = new StickerRecycleAdapter(stickers, R.layout.sticker_item_layout);
@@ -100,33 +97,14 @@ public class MainActivity extends AppCompatActivity  {
         return board.listOfGoals;
     }
 
-    private Board getDummyBoard() {
-        Board dummyBoard = new Board();
-        dummyBoard.boardId = -1;
-        dummyBoard.prize = "터닝매카드 3개 사주기";
-        dummyBoard.stickerSize = 23;
-        dummyBoard.userName = "교남이";
-        dummyBoard.listOfGoals = "양치 잘 하기\n엄마 심부름 하루에 한 번\n숙제는 저녁 식사 전에 마치기";
-        dummyBoard.stickerPos = 4;
-        return dummyBoard;
-    }
-
-
     private List<Sticker> getStickersWithDates(List<Date> dates, int stickerSize) {
         LinkedList<Sticker> stickers = new LinkedList<>();
 
-        if (dates == null || dates.size() == 0) {
-            stickers.add(new Sticker(createDate(2015, 12, 20)));
-            stickers.add(new Sticker(createDate(2015, 12, 21)));
-            stickers.add(new Sticker(createDate(2015, 12, 22)));
-            stickers.add(new Sticker(createDate(2015, 12, 23)));
-            stickers.add(new Sticker(createDate(2015, 12, 24)));
-        } else {
-            for (Date checkedDate : dates) {
-                Log.d("unja", "date :"+checkedDate);
-                stickers.add(new Sticker(checkedDate));
-            }
+        for (Date checkedDate : dates) {
+            Log.d("unja", "date :"+checkedDate);
+            stickers.add(new Sticker(checkedDate));
         }
+
         int uncheckedItemLength = stickerSize - stickers.size();
         for (int i = 0; i < uncheckedItemLength; i++) {
             stickers.add(new Sticker());
@@ -186,7 +164,6 @@ public class MainActivity extends AppCompatActivity  {
                 label.append("Good").append("\n");
                 SimpleDateFormat sm = new SimpleDateFormat("mm/dd");
                 label.append(sm.format(item.checkedDate));
-//                label.append(Integer.toString(position+1));
             } else {
                 label.append(Integer.toString(position+1));
             }

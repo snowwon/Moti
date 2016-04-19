@@ -27,8 +27,8 @@ public class BoardManager {
     public int createBoard(String userName, Integer stickerSize, String listOfGoals, String prize) {
         MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
 
-        String sql = "insert into boards(assignee, goals, prize, number_of_stickers, current_pos_of_sticker, start_date) values (\'"
-                + userName + "\', \'"+listOfGoals+"\', \'"+prize+"\', "+stickerSize+", 0, date(\'now\'));";
+        String sql = "insert into boards(assignee, goals, prize, number_of_stickers, current_pos_of_sticker, start_date, end_date) values (\'"
+                + userName + "\', \'"+listOfGoals+"\', \'"+prize+"\', "+stickerSize+", 0, date(\'now\'), null);";
         Log.d("unja", "sql: "+sql);
         mySQLiteHandler.executeSQL(sql);
 
@@ -63,8 +63,7 @@ public class BoardManager {
      */
     public int getCurrentBoardId() {
         MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
-        Cursor cursor = mySQLiteHandler.select("select _id from boards where end_date = null order by _id desc;", null);
-
+        Cursor cursor = mySQLiteHandler.select("select _id from boards where end_date is null order by _id desc;", null);
 
         if (cursor.moveToFirst()) {
             int boardId =  cursor.getInt(cursor.getColumnIndex("_id"));
