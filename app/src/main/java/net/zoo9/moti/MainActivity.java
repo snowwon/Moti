@@ -1,10 +1,12 @@
 package net.zoo9.moti;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,13 +33,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity  {
     private Board board = null;
     private  StickerRecycleAdapter stickerRecyclerAdapter = null;
+    private int board_id = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        int board_id = -1;
+        board_id = -1;
         if (intent != null) {
             board_id = intent.getIntExtra("board_id", -1);
         }
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity  {
         } else {
             // invalid case. Let the user see the board creation page.
             Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
-            startActivity(intent);
+            startActivity(iWannaGoToCreateActivity);
             finish();
         }
 
@@ -205,13 +208,28 @@ public class MainActivity extends AppCompatActivity  {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_board) {
-
             startActivity(new Intent(this, CreateBoardActivity.class));
             return true;
         } else if (id == R.id.action_delete_board) {
+            // show the confirm dialog to check whether user really wanna delete the current board.
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("스티커판 제거")
+                    .setMessage("현재 진행 중인 스티커 판을 제거하시겠습니까?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            BoardManager.getInstance(MainActivity.this).removeBoard(board_id);
+                            Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
+                            startActivity(iWannaGoToCreateActivity);
+                            finish();
+                        }
 
-            startActivity(new Intent(this, DeleteBoardActivity.class));
-            return true;
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
         } else if (id == R.id.action_manage_boards) {
 
             startActivity(new Intent(this, ManageBoardsActivity.class));

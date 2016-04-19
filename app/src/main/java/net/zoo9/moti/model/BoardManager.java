@@ -57,6 +57,13 @@ public class BoardManager {
         return  board;
     }
 
+    public void removeBoard(int boardId) {
+        MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
+        String deleteSql = "delete from boards where _id = "+boardId;
+        mySQLiteHandler.executeSQL(deleteSql);
+        mySQLiteHandler.close();
+    }
+
     /**
      *
      * @return if there's no data activated, return -1. Otherwise we will return the id of current board.
