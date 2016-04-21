@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.zoo9.moti.model.Board;
 import net.zoo9.moti.model.BoardManager;
@@ -85,15 +86,50 @@ public class MainActivity extends AppCompatActivity  {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (board_id >= 0) {
-                    stickerRecyclerAdapter.addNewSticker(board_id);
-                } else {
-                    Log.e("unja", "invalid board id : "+board_id);
-                }
+                addNewSticker(board_id);
             }
         });
 
 
+    }
+
+    private void addNewSticker(final int board_id) {
+        if (board_id >= 0) {
+            stickerRecyclerAdapter.addNewSticker(board_id);
+            Log.d("unja", "sticker pos vs size: "+board.stickerPos+" - "+board.stickerSize);
+            if (board.stickerPos == board.stickerSize) {
+                StringBuffer message = new StringBuffer();
+                message.append("축하합니다!\n").append(board.userName).append(" 님의 스티커판이 완성되었습니다.\n");
+                new AlertDialog.Builder(MainActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("스티커 완성")
+                        .setMessage(message.toString())
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                BoardManager.getInstance(MainActivity.this).getBoardEnded(board_id);
+                                Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
+                                startActivity(iWannaGoToCreateActivity);
+                                finish();
+                            }
+                        })
+                        .show();
+            } else {
+                Toast.makeText(MainActivity.this, "참! 잘했어요.\n" + "스티커 1개가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Log.e("unja", "invalid board id : " + board_id);
+        }
+    }
+
+    private void removeTheLastStikcer() {
+        board.stickerPos = board.stickerPos - 1;
+        StickerHistoryManager.getInstance(MainActivity.this).removeLastSticker(board_id);
+        BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
+        stickerRecyclerAdapter.stickers.set(board.stickerPos, new Sticker());
+        updateTitleBasedOnCurrentBoard();
+        stickerRecyclerAdapter.notifyDataSetChanged();
+        Toast.makeText(MainActivity.this, "저런 ...\n" + "스티커 1개가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void updateTitleBasedOnCurrentBoard() {
@@ -164,14 +200,7 @@ public class MainActivity extends AppCompatActivity  {
                 .show();
     }
 
-    private void removeTheLastStikcer() {
-        board.stickerPos = board.stickerPos - 1;
-        StickerHistoryManager.getInstance(MainActivity.this).removeLastSticker(board_id);
-        BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
-        stickerRecyclerAdapter.stickers.set(board.stickerPos, new Sticker());
-        updateTitleBasedOnCurrentBoard();
-        stickerRecyclerAdapter.notifyDataSetChanged();
-    }
+
 
     private class StickerRecycleAdapter extends RecyclerView.Adapter<StickerViewHolder>{
         public List<Sticker> stickers;
@@ -262,8 +291,22 @@ public class MainActivity extends AppCompatActivity  {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_board) {
-            startActivity(new Intent(this, CreateBoardActivity.class));
-            return true;
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("새 스티커판 만들기")
+                    .setMessage("현재 진행 중인 스티커 판은 중도 포기하고, 새로 만들어지게 됩니다. 새로 만드시겠습니까?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            BoardManager.getInstance(MainActivity.this).getBoardEnded(board_id);
+                            startActivity(new Intent(MainActivity.this, CreateBoardActivity.class));
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
         } else if (id == R.id.action_delete_board) {
             // show the confirm dialog to check whether user really wanna delete the current board.
             new AlertDialog.Builder(this)

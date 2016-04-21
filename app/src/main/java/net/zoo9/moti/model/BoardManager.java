@@ -30,6 +30,13 @@ public class BoardManager {
         mySQLiteHandler.executeSQL(sql);
     }
 
+    public void getBoardEnded(int boardId) {
+        MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
+        String deleteSql = "update boards set end_date = date('now') where _id = "+boardId;
+        mySQLiteHandler.executeSQL(deleteSql);
+        mySQLiteHandler.close();
+    }
+
     public int createBoard(String userName, Integer stickerSize, String listOfGoals, String prize) {
         MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
 
