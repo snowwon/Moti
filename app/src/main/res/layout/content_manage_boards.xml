@@ -10,4 +10,10 @@
     tools:showIn="@layout/activity_manage_boards"
     tools:context="net.zoo9.moti.ManageBoardsActivity">
 
+    <android.support.v7.widget.RecyclerView android:id="@+id/list_of_past_boards"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" android:padding="10dp" >
+    </android.support.v7.widget.RecyclerView>
+
+
 </RelativeLayout>

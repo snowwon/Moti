@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by sheldon on 16. 4. 10..
  */
@@ -42,7 +45,7 @@ public class BoardManager {
 
         String sql = "insert into boards(assignee, goals, prize, number_of_stickers, current_pos_of_sticker, start_date, end_date) values (\'"
                 + userName + "\', \'"+listOfGoals+"\', \'"+prize+"\', "+stickerSize+", 0, date(\'now\'), null);";
-        Log.d("unja", "sql: "+sql);
+        Log.d("unja", "sql: " + sql);
         mySQLiteHandler.executeSQL(sql);
 
         Cursor cursor = mySQLiteHandler.select("select _id from boards where assignee = ? and goals = ?", new String[]{userName, listOfGoals});
@@ -95,5 +98,27 @@ public class BoardManager {
         }
 
         return -1;
+    }
+
+    public List<Board> getPastBoards() {
+        MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
+        Cursor cursor = mySQLiteHandler.select("select _id, assignee, goals, prize, number_of_stickers, current_pos_of_sticker, end_date, start_date from boards where end_date is not null", null);
+
+        LinkedList<Board> boards = new LinkedList<Board>();
+
+        while (cursor.moveToNext()) {
+            Board board = new Board();
+            board.boardId = cursor.getInt(cursor.getColumnIndex("_id"));
+            board.userName = cursor.getString(cursor.getColumnIndex("assignee"));
+            board.prize = cursor.getString(cursor.getColumnIndex("prize"));
+            board.listOfGoals = cursor.getString(cursor.getColumnIndex("goals"));
+            board.stickerPos = cursor.getInt(cursor.getColumnIndex("current_pos_of_sticker"));
+            board.stickerSize = cursor.getInt(cursor.getColumnIndex("number_of_stickers"));
+            board.endDate = cursor.getString(cursor.getColumnIndex("end_date"));
+            board.startDate = cursor.getString(cursor.getColumnIndex("start_date"));
+            boards.add(board);
+        }
+
+        return  boards;
     }
 }

@@ -330,6 +330,7 @@ public class MainActivity extends AppCompatActivity  {
         } else if (id == R.id.action_manage_boards) {
 
             startActivity(new Intent(this, ManageBoardsActivity.class));
+            finish();
             return true;
         }
 

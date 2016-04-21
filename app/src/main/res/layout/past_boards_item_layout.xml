@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:background="@color/cardview_dark_background" android:padding="6dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="vertical">
+        <TextView android:id="@+id/board_id_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:visibility="gone" android:text="11"/>
+        <TextView android:id="@+id/user_id_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="김지호"/>
+        <TextView android:id="@+id/period_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="2010.05.01 ~ 2011.10.10"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content" android:layout_alignParentRight="true"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button android:id="@+id/btn_view_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="보기"/>
+        <Button android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="삭재"/>
+    </LinearLayout>
+</RelativeLayout>
