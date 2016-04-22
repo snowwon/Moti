@@ -14,4 +14,8 @@ public class Board {
     public int stickerPos;
     public String endDate;
     public String startDate;
+
+    public String toString() {
+        return "loaded boar "+"--"+boardId+":"+stickerPos+"/"+stickerSize+":"+userName+","+prize+","+listOfGoals;
+    }
 }

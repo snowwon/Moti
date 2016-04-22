@@ -3,6 +3,7 @@ package net.zoo9.moti;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity  {
     private static Board board = null;
     private StickerRecycleAdapter stickerRecyclerAdapter = null;
     private int board_id = -1;
+    private boolean isReadOnlyMode = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,14 @@ public class MainActivity extends AppCompatActivity  {
             Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
             startActivity(iWannaGoToCreateActivity);
             finish();
+        }
+
+        Log.d("unja", "main activity board: "+board);
+
+
+        String mode = intent.getStringExtra("mode");
+        if (mode != null && (mode.equalsIgnoreCase("r") == true)) {
+            isReadOnlyMode = true;
         }
 
         // initialBoardUI()
@@ -89,11 +101,38 @@ public class MainActivity extends AppCompatActivity  {
                 addNewSticker(board_id);
             }
         });
-
-
     }
 
+    private void loadCurrentActivatedBoard(int board_id_of_activated_board) {
+        isReadOnlyMode = false;
+        Log.d("unja", "updateBoardInfos : "+board_id_of_activated_board);
+        board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id_of_activated_board);
+        Log.d("unja", "loaded board: "+board.userName+","+board.prize+","+board.listOfGoals+"--"+board.boardId );
+        updateTitleBasedOnCurrentBoard();
+        ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
+        ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
+
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
+        List<Sticker> stickers = null;
+        List<Date> checkedDates = null;
+        try {
+            checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
+            stickers = getStickersWithDates(checkedDates, board.stickerSize);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        ((StickerRecycleAdapter)recyclerView.getAdapter()).stickers = stickers;
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+
+
     private void addNewSticker(final int board_id) {
+        if (isReadOnlyMode) {
+            notifyReadMode();
+            return;
+        }
+
         if (board_id >= 0) {
             stickerRecyclerAdapter.addNewSticker(board_id);
             Log.d("unja", "sticker pos vs size: "+board.stickerPos+" - "+board.stickerSize);
@@ -122,7 +161,16 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
+    private void notifyReadMode() {
+        Toast.makeText(MainActivity.this, "읽기 전용 모드입니다.", Toast.LENGTH_SHORT).show();
+    }
+
     private void removeTheLastStikcer() {
+        if (isReadOnlyMode) {
+            notifyReadMode();
+            return;
+        }
+
         board.stickerPos = board.stickerPos - 1;
         StickerHistoryManager.getInstance(MainActivity.this).removeLastSticker(board_id);
         BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
@@ -145,7 +193,6 @@ public class MainActivity extends AppCompatActivity  {
         LinkedList<Sticker> stickers = new LinkedList<>();
 
         for (Date checkedDate : dates) {
-            Log.d("unja", "date :"+checkedDate);
             stickers.add(new Sticker(checkedDate));
         }
 
@@ -254,6 +301,7 @@ public class MainActivity extends AppCompatActivity  {
             if (position == board.stickerPos - 1) {
                 return 2;
             } else {
+                Log.d("unja", "checked date: "+stickers.get(position).checkedDate);
                 if (stickers.get(position).checkedDate != null) {
                     // clicked sticker type
                     return 0;
@@ -290,7 +338,17 @@ public class MainActivity extends AppCompatActivity  {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add_board) {
+        if (id == R.id.action_current_board) {
+            int board_id_of_activated_board = BoardManager.getInstance(getApplicationContext()).getCurrentBoardId();
+            Log.d("unja", "activated_board : "+board_id_of_activated_board );
+            if (board_id_of_activated_board < 0) {
+                Intent intent = new Intent(MainActivity.this, GuideForCreationActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                loadCurrentActivatedBoard(board_id_of_activated_board);
+            }
+        } else if (id == R.id.action_add_board) {
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("새 스티커판 만들기")
@@ -336,5 +394,7 @@ public class MainActivity extends AppCompatActivity  {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

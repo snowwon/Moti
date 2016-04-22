@@ -27,6 +27,8 @@ import java.util.List;
 
 public class ManageBoardsActivity extends AppCompatActivity {
 
+    PastBoardsRecylerAdapter pastBoardsRecylerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,7 @@ public class ManageBoardsActivity extends AppCompatActivity {
         List<Board> boards = null;
         boards = BoardManager.getInstance(ManageBoardsActivity.this).getPastBoards();
 
-        PastBoardsRecylerAdapter pastBoardsRecylerAdapter = new PastBoardsRecylerAdapter (boards, R.layout.past_boards_item_layout);
+        pastBoardsRecylerAdapter = new PastBoardsRecylerAdapter (boards, R.layout.past_boards_item_layout);
         recyclerView.setAdapter(pastBoardsRecylerAdapter);
 
         if (getSupportActionBar() != null) {
@@ -53,9 +55,17 @@ public class ManageBoardsActivity extends AppCompatActivity {
         }
     }
 
+    public void removePastBoard(int boardId) {
+        // delete the target board from database.
+        BoardManager.getInstance(ManageBoardsActivity.this).removeBoard(boardId);
+        // update the recylerview.
+        pastBoardsRecylerAdapter.removePastBoard(boardId);
+    }
+
     @Override
     public boolean onOptionsItemSelected (MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+
             finish();
         }
 
@@ -69,6 +79,17 @@ public class ManageBoardsActivity extends AppCompatActivity {
         public PastBoardsRecylerAdapter(List<Board> boards, int itemLayout) {
             this.boards = boards;
             this.itemLayout = itemLayout;
+        }
+
+        public void removePastBoard(int boardId) {
+            Board targetBoard = null;
+            for (Board board : boards) {
+                if (board.boardId == boardId) {
+                    targetBoard = board;
+                }
+            }
+            boards.remove(targetBoard);
+            notifyDataSetChanged();
         }
 
         @Override
@@ -126,7 +147,7 @@ public class ManageBoardsActivity extends AppCompatActivity {
 
             if (v.getId() == R.id.btn_delete) {
                 Log.d("unja", "delete legacy board : "+board_id);
-
+                removePastBoard(board_id);
             } else {
                 Intent intent_I_want_to_load_board = new Intent(ManageBoardsActivity.this, MainActivity.class);
                 intent_I_want_to_load_board.putExtra("board_id", board_id);
