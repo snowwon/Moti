@@ -16,6 +16,6 @@ public class Board {
     public String startDate;
 
     public String toString() {
-        return "loaded boar "+"--"+boardId+":"+stickerPos+"/"+stickerSize+":"+userName+","+prize+","+listOfGoals;
+        return "board: "+boardId+" :::: "+userName+","+prize+","+listOfGoals+","+stickerPos+"/"+stickerSize;
     }
 }

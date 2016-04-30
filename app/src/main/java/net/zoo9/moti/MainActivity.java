@@ -32,7 +32,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity  {
     private static Board board = null;
     private StickerRecycleAdapter stickerRecyclerAdapter = null;
-    private int board_id = -1;
     private boolean isReadOnlyMode = false;
 
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        board_id = -1;
+        int board_id = -1;
         if (intent != null) {
             board_id = intent.getIntExtra("board_id", -1);
         }
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity  {
             // invalid case. Let the user see the board creation page.
             Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
             startActivity(iWannaGoToCreateActivity);
-            finish();
         }
 
         Log.d("unja", "main activity board: "+board);
@@ -98,16 +96,15 @@ public class MainActivity extends AppCompatActivity  {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addNewSticker(board_id);
+                addNewSticker();
             }
         });
     }
 
     private void loadCurrentActivatedBoard(int board_id_of_activated_board) {
         isReadOnlyMode = false;
-        Log.d("unja", "updateBoardInfos : "+board_id_of_activated_board);
         board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id_of_activated_board);
-        Log.d("unja", "loaded board: "+board.userName+","+board.prize+","+board.listOfGoals+"--"+board.boardId );
+        Log.d("unja", "loadCurrentActivatedBoard: "+board);
         updateTitleBasedOnCurrentBoard();
         ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
         ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
@@ -127,7 +124,9 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
-    private void addNewSticker(final int board_id) {
+    private void addNewSticker() {
+        int board_id = board.boardId;
+        Log.d("unja", "addNewSticker to "+board_id);
         if (isReadOnlyMode) {
             notifyReadMode();
             return;
@@ -146,7 +145,7 @@ public class MainActivity extends AppCompatActivity  {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                BoardManager.getInstance(MainActivity.this).getBoardEnded(board_id);
+                                BoardManager.getInstance(MainActivity.this).getBoardEnded(board.boardId);
                                 Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
                                 startActivity(iWannaGoToCreateActivity);
                                 finish();
@@ -172,8 +171,8 @@ public class MainActivity extends AppCompatActivity  {
         }
 
         board.stickerPos = board.stickerPos - 1;
-        StickerHistoryManager.getInstance(MainActivity.this).removeLastSticker(board_id);
-        BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
+        StickerHistoryManager.getInstance(MainActivity.this).removeLastSticker(board.boardId);
+        BoardManager.getInstance(MainActivity.this).updateStickerPosition(board.boardId, board.stickerPos);
         stickerRecyclerAdapter.stickers.set(board.stickerPos, new Sticker());
         updateTitleBasedOnCurrentBoard();
         stickerRecyclerAdapter.notifyDataSetChanged();
@@ -301,7 +300,6 @@ public class MainActivity extends AppCompatActivity  {
             if (position == board.stickerPos - 1) {
                 return 2;
             } else {
-                Log.d("unja", "checked date: "+stickers.get(position).checkedDate);
                 if (stickers.get(position).checkedDate != null) {
                     // clicked sticker type
                     return 0;
@@ -344,7 +342,6 @@ public class MainActivity extends AppCompatActivity  {
             if (board_id_of_activated_board < 0) {
                 Intent intent = new Intent(MainActivity.this, GuideForCreationActivity.class);
                 startActivity(intent);
-                finish();
             } else {
                 loadCurrentActivatedBoard(board_id_of_activated_board);
             }
@@ -357,9 +354,8 @@ public class MainActivity extends AppCompatActivity  {
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            BoardManager.getInstance(MainActivity.this).getBoardEnded(board_id);
+                            BoardManager.getInstance(MainActivity.this).getBoardEnded(board.boardId);
                             startActivity(new Intent(MainActivity.this, CreateBoardActivity.class));
-                            finish();
                         }
                     })
                     .setNegativeButton("No", null)
@@ -375,10 +371,9 @@ public class MainActivity extends AppCompatActivity  {
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            BoardManager.getInstance(MainActivity.this).removeBoard(board_id);
+                            BoardManager.getInstance(MainActivity.this).removeBoard(board.boardId);
                             Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
                             startActivity(iWannaGoToCreateActivity);
-                            finish();
                         }
 
                     })
@@ -386,9 +381,7 @@ public class MainActivity extends AppCompatActivity  {
                     .show();
 
         } else if (id == R.id.action_manage_boards) {
-
             startActivity(new Intent(this, ManageBoardsActivity.class));
-            finish();
             return true;
         }
 

@@ -12,7 +12,7 @@ import net.zoo9.moti.util.SQLScriptRunner;
  * Created by sheldon on 16. 4. 3..
  */
 public class MySQLiteOpenHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 22;
+    private static final int VERSION = 25;
     private static final String DATABASE_NAME = "moti.db";
     private Context context;
 
