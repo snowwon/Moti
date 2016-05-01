@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity  {
     private StickerRecycleAdapter stickerRecyclerAdapter = null;
     private boolean isReadOnlyMode = false;
 
+    private final static int STICKER_WIDTH_IN_DP = 80;
 
 
     @Override
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity  {
         ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getProperGridNumber());
         gridLayoutManager.scrollToPosition(board.stickerPos);
         recyclerView.setLayoutManager(gridLayoutManager);
 
@@ -99,6 +101,16 @@ public class MainActivity extends AppCompatActivity  {
                 addNewSticker();
             }
         });
+    }
+
+    private int getProperGridNumber() {
+        final DisplayMetrics displayMetrics=getResources().getDisplayMetrics();
+        final float device_screen_width_in_dp=displayMetrics.widthPixels/displayMetrics.density;
+        Log.d("unja", "divide: "+device_screen_width_in_dp+"%"+STICKER_WIDTH_IN_DP+"="+(device_screen_width_in_dp / STICKER_WIDTH_IN_DP));
+        int suggestedGridNumber = (int)(Math.floor(device_screen_width_in_dp / STICKER_WIDTH_IN_DP));
+        Log.d("unja", "suggested grid number: "+suggestedGridNumber);
+        return suggestedGridNumber;
+
     }
 
     private void loadCurrentActivatedBoard(int board_id_of_activated_board) {
