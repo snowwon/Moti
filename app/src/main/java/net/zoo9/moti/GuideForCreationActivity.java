@@ -19,8 +19,10 @@ public class GuideForCreationActivity extends AppCompatActivity {
 
         ((Button) findViewById(R.id.create_board_button_at_intro)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(self, CreateBoardActivity.class));
-                finish();
+                Intent intent = new Intent(self, CreateBoardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
             }
         });
 

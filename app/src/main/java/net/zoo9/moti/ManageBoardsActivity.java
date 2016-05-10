@@ -38,6 +38,40 @@ public class ManageBoardsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("지난 스티커판 보기");
 
 
+//        TextView noPreviousBoardMsg = (TextView) findViewById(R.id.msg_for_no_previous_board);
+//
+//
+//        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.list_of_past_boards);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ManageBoardsActivity.this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//
+//        List<Board> boards = null;
+//        boards = BoardManager.getInstance(ManageBoardsActivity.this).getPastBoards();
+//
+//        if (boards.size() == 0) {
+//            recyclerView.setVisibility(View.GONE);
+//            noPreviousBoardMsg.setVisibility(View.VISIBLE);
+//        } else {
+//            recyclerView.setVisibility(View.VISIBLE);
+//            noPreviousBoardMsg.setVisibility(View.GONE);
+//        }
+//
+//        pastBoardsRecylerAdapter = new PastBoardsRecylerAdapter (boards, R.layout.past_boards_item_layout);
+//        recyclerView.setAdapter(pastBoardsRecylerAdapter);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        TextView noPreviousBoardMsg = (TextView) findViewById(R.id.msg_for_no_previous_board);
+
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.list_of_past_boards);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ManageBoardsActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -46,13 +80,17 @@ public class ManageBoardsActivity extends AppCompatActivity {
         List<Board> boards = null;
         boards = BoardManager.getInstance(ManageBoardsActivity.this).getPastBoards();
 
+        Log.d("unja", "boards length: "+boards.size());
+        if (boards.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            noPreviousBoardMsg.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noPreviousBoardMsg.setVisibility(View.GONE);
+        }
+
         pastBoardsRecylerAdapter = new PastBoardsRecylerAdapter (boards, R.layout.past_boards_item_layout);
         recyclerView.setAdapter(pastBoardsRecylerAdapter);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
     }
 
     public void removePastBoard(int boardId) {
@@ -104,6 +142,7 @@ public class ManageBoardsActivity extends AppCompatActivity {
             String userName = board.userName;
             int boardId = board.boardId;
             String period = board.startDate + " ~ " + board.endDate;
+
             String finalStatus = "획득 성공: "+board.prize;
             if (board.stickerSize != board.stickerPos) {
                 finalStatus = "획득 실패: "+board.prize;
@@ -112,7 +151,7 @@ public class ManageBoardsActivity extends AppCompatActivity {
             holder.period.setText(period);
             holder.userName.setText(userName);
             holder.boardId.setText(Integer.toString(boardId));
-            holder.finalStatus.setText(finalStatus);
+            //holder.finalStatus.setText(finalStatus);
 
         }
 
@@ -126,7 +165,7 @@ public class ManageBoardsActivity extends AppCompatActivity {
         public TextView userName;
         public TextView period;
         public TextView boardId;
-        public TextView finalStatus;
+        // public TextView finalStatus;
 
 
         public PastBoardViewHolder(View itemView) {
@@ -135,7 +174,7 @@ public class ManageBoardsActivity extends AppCompatActivity {
             boardId = (TextView) itemView.findViewById(R.id.board_id_text);
             userName = (TextView) itemView.findViewById(R.id.user_id_text);
             period = (TextView) itemView.findViewById(R.id.period_text);
-            finalStatus = (TextView) itemView.findViewById(R.id.final_status);
+            //finalStatus = (TextView) itemView.findViewById(R.id.final_status);
 
             itemView.findViewById(R.id.btn_view_details).setOnClickListener(this);
             itemView.findViewById(R.id.btn_delete).setOnClickListener(this);
@@ -153,7 +192,6 @@ public class ManageBoardsActivity extends AppCompatActivity {
                 intent_I_want_to_load_board.putExtra("board_id", board_id);
                 intent_I_want_to_load_board.putExtra("mode", "r");
                 startActivity(intent_I_want_to_load_board);
-                finish();
             }
         }
     }

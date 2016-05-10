@@ -25,7 +25,21 @@
         insert into goals(goal) values (\'스마트폰을 정해진 시간만 사용해요.\');
         insert into goals(goal) values (\'텔레비전을 멀리 떨어진 곳에서 봐요.\');
         insert into goals(goal) values (\'집에 오면 바로 손을 씻어요\');
+        insert into goals(goal) values (\'식사 후 양치를 잘해요.\');
+        insert into goals(goal) values (\'한 자리에 바르게 앉아서 식사해요.\');
+        insert into goals(goal) values (\'음식을 가리지 않고 골고루 먹어요.\');
         insert into goals(goal) values (\'식사 준비와 식사 후 정리를 도와요.\');
+        insert into goals(goal) values (\'형제 자매와 싸우지 않고 사이좋게 지내요.\');
+        insert into goals(goal) values (\'친구들과 싸우지 않고 사이좋게 지내요.\');
+        insert into goals(goal) values (\'예의 바르고 씩씩하게 인사해요.\');
+        insert into goals(goal) values (\'집안일을 도와 드려요.\');
+        insert into goals(goal) values (\'바르고 고운 말로 이야기해요.\');
+        insert into goals(goal) values (\'공공장소에서는 조용히 하고 예의를 지켜요.\');
+        insert into goals(goal) values (\'장난감을 갖고 논 후 제자리에 정리해요.\');
+        insert into goals(goal) values (\'물건을 던지지 않고 아끼고 소중히 다뤄요.\');
+        insert into goals(goal) values (\'숙제를 먼저 마치고 놀아요.\');
+        insert into goals(goal) values (\'일찍 자고 일찍 일어나요.\');
+
     </string>
 
     <string name="moti_db_drop_tables">

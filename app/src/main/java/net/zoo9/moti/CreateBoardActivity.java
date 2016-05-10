@@ -9,7 +9,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +25,7 @@ import net.zoo9.moti.model.BoardManager;
 import java.util.List;
 
 public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDialgFragment.SetGoalDialogFragmentInterface {
+    public static final int MAX_SIZE_OF_STICKERS = 50;
     private Context context;
 
     @Override
@@ -50,6 +53,27 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
         });
 
         this.context = getApplicationContext();
+
+        ((EditText)findViewById(R.id.edit_text_sticker_size)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if ( s == null || s.toString().trim().equals("")) {return;}
+                int sizeOfBoard = Integer.parseInt(s.toString());
+                if (sizeOfBoard > MAX_SIZE_OF_STICKERS) {
+                    Toast.makeText(CreateBoardActivity.this, "스티커 개수는 최대 50개 입니다.", Toast.LENGTH_SHORT).show();
+                    s.replace(0, s.length(), "50");
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+        });
 
         ((Button)findViewById(R.id.btn_cancel)).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -30,9 +30,9 @@ public class SplashActivity extends Activity {
             public void run() {
                 if (board_id_of_activated_board < 0) {
                     Intent intent = new Intent(SplashActivity.this, GuideForCreationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-
                 } else {
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     intent.putExtra("board_id", board_id_of_activated_board);
@@ -42,4 +42,5 @@ public class SplashActivity extends Activity {
             }
         }, SPLASH_TIME_OUT_IN_SEC * 1000);
     }
+
 }

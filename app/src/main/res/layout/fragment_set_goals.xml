@@ -12,11 +12,12 @@
 
 
 
-    <LinearLayout android:orientation="vertical"
+    <RelativeLayout android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <RelativeLayout android:layout_alignParentTop="true"
+            android:id="@+id/manual_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -41,15 +42,11 @@
 
         </RelativeLayout>
 
-
-        <android.support.v7.widget.RecyclerView android:id="@+id/recycle_goals"
-            android:layout_width="fill_parent"
-            android:layout_height="150dp" android:padding="10dp" >
-        </android.support.v7.widget.RecyclerView>
-
-        <RelativeLayout android:orientation="horizontal"
+        <RelativeLayout android:id="@+id/goal_buttons"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" >
             <Button android:id="@+id/btn_update_parent_window"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
@@ -60,7 +57,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text="취 소" />
         </RelativeLayout>
-    </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView android:layout_above="@id/goal_buttons" android:layout_below="@id/manual_input"
+            android:id="@+id/recycle_goals"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent" android:padding="10dp" >
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
 
 
 

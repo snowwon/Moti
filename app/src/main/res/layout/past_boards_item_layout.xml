@@ -23,9 +23,11 @@
             <TextView android:id="@+id/period_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text="2010.05.01 ~ 2011.10.10"/>
+            <!--
             <TextView android:id="@+id/final_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text="2010.05.01 ~ 2011.10.10"/>
+            -->
         </LinearLayout>
 
         <LinearLayout
