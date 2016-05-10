@@ -28,7 +28,6 @@ public class GoalManager {
 
     public List<Goal> getDefaultGoals() {
         ArrayList<Goal> defaultGoals = new ArrayList<Goal>();
-        Log.d("unja", "getDefaultGoals .................");
         MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
         Cursor cursor = mySQLiteHandler.select("select * from goals", null);
         while (cursor.moveToNext()) {
@@ -56,5 +55,11 @@ public class GoalManager {
             newGoal = new Goal(goalId, goalDesc);
         }
         return newGoal;
+    }
+
+    public void removeGoal(int goal_id) {
+        MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
+        String sql = "delete from goals where _id = "+goal_id+ ";";
+        mySQLiteHandler.executeSQL(sql);
     }
 }

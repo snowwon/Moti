@@ -1,12 +1,15 @@
 package net.zoo9.moti.controller;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import net.zoo9.moti.R;
+import net.zoo9.moti.SetGoalsDialgFragment;
 import net.zoo9.moti.model.Goal;
+import net.zoo9.moti.model.GoalManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,14 +23,16 @@ import java.util.Set;
 public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
     List<Goal> goalList = null;
     Set<Integer> selected = null;
+    Context context = null;
     final static int LIMIT_SELECTED_GOALS = 3;
 
     private int itemLayout;
 
-    public GoalAdapter (List<Goal> goalList, int itemLayout) {
+    public GoalAdapter(List<Goal> goalList, int itemLayout, Context context) {
         this.goalList = goalList;
         this.itemLayout = itemLayout;
         this.selected = new HashSet<Integer>();
+        this.context = context;
     }
 
     @Override
@@ -49,6 +54,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
     public void onBindViewHolder(GoalViewHolder holder, int position) {
         Goal item = goalList.get(position);
         holder.label.setText(item.goal_desc);
+        holder.goal_id.setText(Integer.toString(item.id));
     }
 
     @Override
@@ -105,6 +111,16 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
             selected.add(selectedPosition);
         }
 //        this.selected.add(new Integer(position));
+        this.notifyDataSetChanged();
+    }
+
+    public void removeGoalItem(int goal_id, int position) {
+        Integer selectedPosition = new Integer(position);
+        if (selected.contains(selectedPosition)) {
+            selected.remove(selectedPosition);
+        }
+        goalList.remove(position);
+        GoalManager.getInstance(context).removeGoal(goal_id);
         this.notifyDataSetChanged();
     }
 }

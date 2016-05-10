@@ -3,14 +3,24 @@
     android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:background="@color/colorPrimary" android:padding="6dp" >
 
-    <ImageView android:id="@+id/icon_clicked"
+    <ImageButton android:id="@+id/delete_button"
+        android:layout_width="wrap_content" android:src="@drawable/ic_delete_white_24dp"
+        android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+
+    <ImageView android:id="@+id/icon_clicked" android:gravity="center_vertical"
         android:layout_width="wrap_content" android:layout_alignParentLeft="true"
         android:layout_height="match_parent"
         android:src="@drawable/ic_check_circle_white_24dp"/>
 
-    <TextView android:id="@+id/text_goal_desc" android:layout_toRightOf="@id/icon_clicked"
-        android:layout_width="match_parent" android:paddingLeft="10dp"
-        android:layout_height="match_parent"
+    <TextView android:id="@+id/text_goal_desc" android:layout_toRightOf="@id/icon_clicked" android:layout_toLeftOf="@id/delete_button"
+        android:layout_width="wrap_content" android:paddingLeft="10dp"
+        android:layout_height="match_parent" android:gravity="center_vertical"
         android:textColor="#ffffff"
         />
+
+    <TextView android:id="@+id/goal_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:visibility="gone" />
+
+
 </RelativeLayout>

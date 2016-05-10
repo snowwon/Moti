@@ -58,7 +58,7 @@ public class SetGoalsDialgFragment extends DialogFragment {
 
 
         List<Goal> goals = getGoalsFromDatabase();
-        final GoalAdapter goalAdapter = new GoalAdapter(goals, R.layout.goal_item_layout);
+        final GoalAdapter goalAdapter = new GoalAdapter(goals, R.layout.goal_item_layout, this.getContext());
         this.goalAdapter = goalAdapter;
 
         goalsRecyclerView.setAdapter(goalAdapter);
