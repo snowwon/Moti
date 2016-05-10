@@ -90,6 +90,7 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
 
                 if (boardId >= 1) {
                     Intent intent_I_want_to_load_board = new Intent(context, MainActivity.class);
+//                    intent_I_want_to_load_board.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent_I_want_to_load_board.putExtra("board_id", boardId);
                     startActivity(intent_I_want_to_load_board);
                     finish();

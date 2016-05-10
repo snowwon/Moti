@@ -35,6 +35,7 @@ public class SplashActivity extends Activity {
                     finish();
                 } else {
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("board_id", board_id_of_activated_board);
                     startActivity(intent);
                     finish();

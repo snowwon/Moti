@@ -189,6 +189,7 @@ public class ManageBoardsActivity extends AppCompatActivity {
                 removePastBoard(board_id);
             } else {
                 Intent intent_I_want_to_load_board = new Intent(ManageBoardsActivity.this, MainActivity.class);
+//                intent_I_want_to_load_board.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent_I_want_to_load_board.putExtra("board_id", board_id);
                 intent_I_want_to_load_board.putExtra("mode", "r");
                 startActivity(intent_I_want_to_load_board);

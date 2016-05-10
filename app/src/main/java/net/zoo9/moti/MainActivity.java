@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        Log.d("unja", "Main Activity's onCreate was invoked.");
         Intent intent = getIntent();
         int board_id = -1;
         if (intent != null) {
@@ -56,7 +56,75 @@ public class MainActivity extends AppCompatActivity  {
             startActivity(iWannaGoToCreateActivity);
         }
 
-        Log.d("unja", "main activity board: "+board);
+//        Log.d("unja", "main activity board: "+board);
+
+
+        String mode = intent.getStringExtra("mode");
+        if (mode != null && (mode.equalsIgnoreCase("r") == true)) {
+            isReadOnlyMode = true;
+        }
+
+        // initialBoardUI()
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        updateTitleBasedOnCurrentBoard();
+
+        // set prize and list of goals in the above of the board.
+        ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
+        ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
+
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getProperGridNumber());
+        gridLayoutManager.scrollToPosition(board.stickerPos);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        List<Sticker> stickers = null;
+
+
+        List<Date> checkedDates = null;
+        try {
+            checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
+            stickers = getStickersWithDates(checkedDates, board.stickerSize);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        stickerRecyclerAdapter = new StickerRecycleAdapter(stickers, R.layout.sticker_item_layout);
+        recyclerView.setAdapter(stickerRecyclerAdapter);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewSticker();
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Log.d("unja", "Main Activity's onResume was invoked.");
+        Intent intent = getIntent();
+        int board_id = -1;
+        if (intent != null) {
+            board_id = intent.getIntExtra("board_id", -1);
+        }
+
+        if (board_id >= 1) {
+            board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id);
+        } else {
+            // invalid case. Let the user see the board creation page.
+            Log.d("unja", "MainActivity: invalid case. Let the user see the board creation page.");
+            Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
+            startActivity(iWannaGoToCreateActivity);
+            finish();
+            return;
+        }
+
+//        Log.d("unja", "main activity board: "+board);
 
 
         String mode = intent.getStringExtra("mode");
@@ -106,9 +174,9 @@ public class MainActivity extends AppCompatActivity  {
     private int getProperGridNumber() {
         final DisplayMetrics displayMetrics=getResources().getDisplayMetrics();
         final float device_screen_width_in_dp=displayMetrics.widthPixels/displayMetrics.density;
-        Log.d("unja", "divide: "+device_screen_width_in_dp+"%"+STICKER_WIDTH_IN_DP+"="+(device_screen_width_in_dp / STICKER_WIDTH_IN_DP));
+//        Log.d("unja", "divide: "+device_screen_width_in_dp+"%"+STICKER_WIDTH_IN_DP+"="+(device_screen_width_in_dp / STICKER_WIDTH_IN_DP));
         int suggestedGridNumber = (int)(Math.floor(device_screen_width_in_dp / STICKER_WIDTH_IN_DP));
-        Log.d("unja", "suggested grid number: "+suggestedGridNumber);
+//        Log.d("unja", "suggested grid number: "+suggestedGridNumber);
         return suggestedGridNumber;
 
     }
@@ -327,13 +395,18 @@ public class MainActivity extends AppCompatActivity  {
         }
 
         public void addNewSticker(int board_id) {
-            StickerHistoryManager.getInstance(MainActivity.this).addNewSticker(board_id);
             board.stickerPos = board.stickerPos + 1;
-            BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
-            Log.d("unja", "Board's StickerPos: "+board.stickerPos);
-            stickers.set(board.stickerPos - 1, new Sticker(new Date()));
-            updateTitleBasedOnCurrentBoard();
-            notifyDataSetChanged();
+            if (stickers.size() <= (board.stickerPos - 1)) {
+                Log.d("unja", "MainActivity.addNewSticker: Invalid Case");
+                board.stickerPos = board.stickerPos - 1;
+            } else {
+                StickerHistoryManager.getInstance(MainActivity.this).addNewSticker(board_id);
+                BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
+                Log.d("unja", "Board's StickerPos: "+board.stickerPos);
+                stickers.set(board.stickerPos - 1, new Sticker(new Date()));
+                updateTitleBasedOnCurrentBoard();
+                notifyDataSetChanged();
+            }
         }
     }
 
