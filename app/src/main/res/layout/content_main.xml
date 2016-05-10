@@ -34,14 +34,14 @@
                         android:text="선물 :" android:padding="7dp"/>
                     <TextView android:id="@+id/textview_prize" android:layout_toRightOf="@id/title_for_present"
                         android:textStyle="bold"  android:textSize="18dp"
-                        android:padding="7dp" android:textColor="@color/colorPrimaryDark"
+                        android:padding="7dp" android:textColor="@color/colorAccent"
                         android:layout_width="wrap_content" android:gravity="center_vertical|left"
                         android:layout_height="wrap_content" android:text="5만원 짜리 기간틱을 사주기로 합니다."/>
                 </RelativeLayout>
                 <TextView android:id="@+id/textview_goals"
                     android:layout_marginBottom="9dp" android:layout_marginTop="5dp"
                     android:layout_marginLeft="20dp"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@android:color/black"
                     android:layout_width="wrap_content" android:textSize="12dp" android:lineSpacingExtra="3dip"
                     android:layout_height="wrap_content" android:text="세부적인 엄마와의 약속.."/>
 
