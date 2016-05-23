@@ -122,7 +122,7 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
 
     private boolean validateInputs(String userName, Integer stickerSize, String listOfGoals, String prize) {
         if (TextUtils.isEmpty(userName)) {
-            Toast.makeText(context, "사용자 이름 기입해 주세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "칭찬 받을 아이의 이름을 넣어주세요", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -137,7 +137,7 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
         }
 
         if (TextUtils.isEmpty(prize)) {
-            Toast.makeText(context, "상품을 지정해 주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "스티커판 완성 선물을 적어주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
 

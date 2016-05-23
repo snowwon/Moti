@@ -3,7 +3,6 @@ package net.zoo9.moti;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +22,7 @@ import android.widget.Toast;
 import net.zoo9.moti.model.Board;
 import net.zoo9.moti.model.BoardManager;
 import net.zoo9.moti.model.StickerHistoryManager;
+import net.zoo9.moti.util.DateUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity  {
     private StickerRecycleAdapter stickerRecyclerAdapter = null;
     private boolean isReadOnlyMode = false;
 
-    private final static int STICKER_WIDTH_IN_DP = 80;
+    private final static int STICKER_WIDTH_IN_DP = 86;
 
 
     @Override
@@ -137,6 +137,11 @@ public class MainActivity extends AppCompatActivity  {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         updateTitleBasedOnCurrentBoard();
+
+        if (getSupportActionBar() != null && isReadOnlyMode == true) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         // set prize and list of goals in the above of the board.
         ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
@@ -248,14 +253,17 @@ public class MainActivity extends AppCompatActivity  {
         Toast.makeText(MainActivity.this, "읽기 전용 모드입니다.", Toast.LENGTH_SHORT).show();
     }
 
-    private void removeTheLastStikcer() {
+    private void removeTheSelectedStikcer(int pos_in_adapter) {
         if (isReadOnlyMode) {
             notifyReadMode();
             return;
         }
 
+        Log.d("unja", "clicked pos: " +pos_in_adapter);
+
         board.stickerPos = board.stickerPos - 1;
-        StickerHistoryManager.getInstance(MainActivity.this).removeLastSticker(board.boardId);
+        String deletedItemDate = StickerHistoryManager.getInstance(MainActivity.this).removeStickerAtAndReturnDateString(board.boardId, pos_in_adapter);
+        Log.d("unja", "deleted item's date: "+deletedItemDate);
         BoardManager.getInstance(MainActivity.this).updateStickerPosition(board.boardId, board.stickerPos);
         stickerRecyclerAdapter.stickers.set(board.stickerPos, new Sticker());
         updateTitleBasedOnCurrentBoard();
@@ -308,22 +316,51 @@ public class MainActivity extends AppCompatActivity  {
 
         @Override
         public void onClick(View v) {
-            if ((getAdapterPosition() + 1) == board.stickerPos) {
-                processRemoveTheLastSticker();
+            if (isReadOnlyMode == true) {
+                return;
+            }
+
+            if ((getAdapterPosition() + 1) <= board.stickerPos) {
+                showDialogForConfirmingOfRemoval(getAdapterPosition());
+            } else {
+                runNewStickerProcess();
             }
         }
     }
 
-    public void processRemoveTheLastSticker() {
+    public void runNewStickerProcess() {
         new AlertDialog.Builder(MainActivity.this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("스티커 삭제")
-                .setMessage("붙였던 스티커를 삭제하시겠습니까?")
+                .setTitle("스티커 붙이기")
+                .setMessage("스트커를 추가하시겠습니까?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        removeTheLastStikcer();
+                        addNewSticker();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+    public void showDialogForConfirmingOfRemoval(int positionOfclickedItem) {
+        final int pos_in_adapter = positionOfclickedItem;
+
+        Sticker targetSticker = stickerRecyclerAdapter.getStickerAt(positionOfclickedItem);
+        if (targetSticker.checkedDate == null) return;
+
+        SimpleDateFormat sm = new SimpleDateFormat("MM/dd");
+        String checkedDateString = sm.format(targetSticker.checkedDate);
+
+        new AlertDialog.Builder(MainActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("스티커 삭제")
+                .setMessage("붙였던 "+checkedDateString+"일 스티커를 삭제하시겠습니까?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeTheSelectedStikcer(pos_in_adapter);
                     }
                 })
                 .setNegativeButton("No", null)
@@ -341,6 +378,10 @@ public class MainActivity extends AppCompatActivity  {
             this.itemLayout = itemLayout;
         }
 
+        public Sticker getStickerAt(int position) {
+            return stickers.get(position);
+        }
+
         @Override
         public StickerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             switch (viewType) {
@@ -350,9 +391,6 @@ public class MainActivity extends AppCompatActivity  {
                 case 1:
                     View unclickedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sticker_item_layout_unclicked, parent, false);
                     return new StickerViewHolder(unclickedView);
-                case 2:
-                    View lastItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sticker_item_layout_last, parent, false);
-                    return new StickerViewHolder(lastItemView);
             }
 
             View defaultView = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
@@ -381,16 +419,12 @@ public class MainActivity extends AppCompatActivity  {
 
         @Override
         public int getItemViewType(int position) {
-            if (position == board.stickerPos - 1) {
-                return 2;
+            if (stickers.get(position).checkedDate != null) {
+                // clicked sticker type
+                return 0;
             } else {
-                if (stickers.get(position).checkedDate != null) {
-                    // clicked sticker type
-                    return 0;
-                } else {
-                    // un-clicked sticker type
-                    return 1;
-                }
+                // un-clicked sticker type
+                return 1;
             }
         }
 
@@ -400,10 +434,12 @@ public class MainActivity extends AppCompatActivity  {
                 Log.d("unja", "MainActivity.addNewSticker: Invalid Case");
                 board.stickerPos = board.stickerPos - 1;
             } else {
-                StickerHistoryManager.getInstance(MainActivity.this).addNewSticker(board_id);
+                Date currentDate = DateUtil.getCurrentDate();
+                Log.d("unja", "current date: "+currentDate);
+                StickerHistoryManager.getInstance(MainActivity.this).addNewSticker(board_id, currentDate);
                 BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
-                Log.d("unja", "Board's StickerPos: "+board.stickerPos);
-                stickers.set(board.stickerPos - 1, new Sticker(new Date()));
+                Log.d("unja", "Board's StickerPos: "+board.stickerPos+", Date: "+(new Date()));
+                stickers.set(board.stickerPos - 1, new Sticker(currentDate));
                 updateTitleBasedOnCurrentBoard();
                 notifyDataSetChanged();
             }
@@ -413,7 +449,10 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (isReadOnlyMode == false) {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
+
         return true;
     }
 
@@ -478,6 +517,8 @@ public class MainActivity extends AppCompatActivity  {
         } else if (id == R.id.action_manage_boards) {
             startActivity(new Intent(this, ManageBoardsActivity.class));
             return true;
+        } else if (id == android.R.id.home) {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

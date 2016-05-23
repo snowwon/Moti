@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import net.zoo9.moti.model.Board;
+import net.zoo9.moti.model.BoardManager;
+
+import java.util.List;
+
 public class GuideForCreationActivity extends AppCompatActivity {
 
     final GuideForCreationActivity self = this;
@@ -25,6 +30,27 @@ public class GuideForCreationActivity extends AppCompatActivity {
 
             }
         });
+
+        ((Button) findViewById(R.id.go_to_previous_boards_activity)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(self, ManageBoardsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+            }
+        });
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        List<Board> previousBoards = BoardManager.getInstance(GuideForCreationActivity.this).getPastBoards();
+        if (previousBoards != null && previousBoards.size() > 0) {
+            ((Button) findViewById(R.id.go_to_previous_boards_activity)).setVisibility(View.VISIBLE);
+        } else {
+            ((Button) findViewById(R.id.go_to_previous_boards_activity)).setVisibility(View.GONE);
+        }
 
     }
 }

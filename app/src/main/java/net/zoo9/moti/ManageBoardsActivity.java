@@ -93,11 +93,25 @@ public class ManageBoardsActivity extends AppCompatActivity {
         recyclerView.setAdapter(pastBoardsRecylerAdapter);
     }
 
+
+
     public void removePastBoard(int boardId) {
         // delete the target board from database.
         BoardManager.getInstance(ManageBoardsActivity.this).removeBoard(boardId);
         // update the recylerview.
         pastBoardsRecylerAdapter.removePastBoard(boardId);
+
+        List<Board> boards = null;
+        boards = BoardManager.getInstance(ManageBoardsActivity.this).getPastBoards();
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.list_of_past_boards);
+        TextView noPreviousBoardMsg = (TextView) findViewById(R.id.msg_for_no_previous_board);
+        if (boards.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            noPreviousBoardMsg.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noPreviousBoardMsg.setVisibility(View.GONE);
+        }
     }
 
     @Override

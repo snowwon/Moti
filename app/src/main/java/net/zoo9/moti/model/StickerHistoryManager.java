@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import net.zoo9.moti.util.DateUtil;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,27 +30,40 @@ public class StickerHistoryManager {
         if (singleInstance == null) {
             singleInstance = new StickerHistoryManager(context);
         }
-
         return singleInstance;
     }
 
-
-
-    public void removeLastSticker(int boardId) {
+    public String removeStickerAtAndReturnDateString(int boardId, int pos_in_data) {
         MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
-        Cursor cursor = mySQLiteHandler.select("select check_date, board_id from sticker_histories where board_id = ? order by check_date desc", new String[]{Integer.toString(boardId)});
+        Cursor cursor = mySQLiteHandler.select("select check_date, board_id from sticker_histories where board_id = ? order by check_date asc", new String[]{Integer.toString(boardId)});
         cursor.moveToFirst();
-        String targetLastStickerCheckDate = cursor.getString(cursor.getColumnIndex("check_date"));
+        int count = 0;
+        String targetLastStickerCheckDate = null;
+        while (true) {
+            if (count == pos_in_data) {
+                targetLastStickerCheckDate = cursor.getString(cursor.getColumnIndex("check_date"));
+                break;
+            } else {
+                count = count + 1;
+                cursor.moveToNext();
+            }
+        }
+
+        if (targetLastStickerCheckDate == null) {
+            Log.e("unja", "We failed at finding the matched sticker at removeStickeAt method");
+            return null;
+        }
 
         String deleteLastItemSQL = "delete from sticker_histories where board_id="+boardId+" and check_date=\'"+targetLastStickerCheckDate+"\'";
         Log.d("unja", "sql string: "+deleteLastItemSQL);
         mySQLiteHandler.executeSQL(deleteLastItemSQL);
+        return targetLastStickerCheckDate;
     }
 
-    public void addNewSticker(int boardId) {
+    public void addNewSticker(int boardId, Date currentDate) {
         MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
         String sqlForAddingNewSticker = "insert into sticker_histories (board_id, check_date) values (" +
-                boardId +", DATETIME('now'))";
+                boardId +", '"+ DateUtil.getDateFormatedStringForSqlite(currentDate)+"')";
         mySQLiteHandler.executeSQL(sqlForAddingNewSticker);
         mySQLiteHandler.close();
     }
