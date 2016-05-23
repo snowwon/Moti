@@ -80,7 +80,7 @@ public class ManageBoardsActivity extends AppCompatActivity {
         List<Board> boards = null;
         boards = BoardManager.getInstance(ManageBoardsActivity.this).getPastBoards();
 
-        Log.d("unja", "boards length: "+boards.size());
+//        Log.d("unja", "boards length: "+boards.size());
         if (boards.size() == 0) {
             recyclerView.setVisibility(View.GONE);
             noPreviousBoardMsg.setVisibility(View.VISIBLE);
@@ -199,7 +199,7 @@ public class ManageBoardsActivity extends AppCompatActivity {
             int board_id = Integer.parseInt(boardId.getText().toString());
 
             if (v.getId() == R.id.btn_delete) {
-                Log.d("unja", "delete legacy board : "+board_id);
+//                Log.d("unja", "delete legacy board : "+board_id);
                 removePastBoard(board_id);
             } else {
                 Intent intent_I_want_to_load_board = new Intent(ManageBoardsActivity.this, MainActivity.class);

@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity  {
             board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id);
         } else {
             // invalid case. Let the user see the board creation page.
-            Log.d("unja", "MainActivity: invalid case. Let the user see the board creation page.");
+//            Log.d("unja", "MainActivity: invalid case. Let the user see the board creation page.");
             Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
             startActivity(iWannaGoToCreateActivity);
             finish();
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity  {
     private void loadCurrentActivatedBoard(int board_id_of_activated_board) {
         isReadOnlyMode = false;
         board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id_of_activated_board);
-        Log.d("unja", "loadCurrentActivatedBoard: "+board);
+//        Log.d("unja", "loadCurrentActivatedBoard: "+board);
         updateTitleBasedOnCurrentBoard();
         ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
         ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private void addNewSticker() {
         int board_id = board.boardId;
-        Log.d("unja", "addNewSticker to "+board_id);
+//        Log.d("unja", "addNewSticker to "+board_id);
         if (isReadOnlyMode) {
             notifyReadMode();
             return;
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity  {
 
         if (board_id >= 0) {
             stickerRecyclerAdapter.addNewSticker(board_id);
-            Log.d("unja", "sticker pos vs size: "+board.stickerPos+" - "+board.stickerSize);
+//            Log.d("unja", "sticker pos vs size: "+board.stickerPos+" - "+board.stickerSize);
             if (board.stickerPos == board.stickerSize) {
                 StringBuffer message = new StringBuffer();
                 message.append("축하합니다!\n\n").append(board.userName).append(" 님의 스티커판이 완성되었습니다.\n\n")
@@ -259,11 +259,11 @@ public class MainActivity extends AppCompatActivity  {
             return;
         }
 
-        Log.d("unja", "clicked pos: " +pos_in_adapter);
+//        Log.d("unja", "clicked pos: " +pos_in_adapter);
 
         board.stickerPos = board.stickerPos - 1;
         String deletedItemDate = StickerHistoryManager.getInstance(MainActivity.this).removeStickerAtAndReturnDateString(board.boardId, pos_in_adapter);
-        Log.d("unja", "deleted item's date: "+deletedItemDate);
+//        Log.d("unja", "deleted item's date: "+deletedItemDate);
         BoardManager.getInstance(MainActivity.this).updateStickerPosition(board.boardId, board.stickerPos);
         stickerRecyclerAdapter.stickers.set(board.stickerPos, new Sticker());
         updateTitleBasedOnCurrentBoard();
@@ -431,14 +431,14 @@ public class MainActivity extends AppCompatActivity  {
         public void addNewSticker(int board_id) {
             board.stickerPos = board.stickerPos + 1;
             if (stickers.size() <= (board.stickerPos - 1)) {
-                Log.d("unja", "MainActivity.addNewSticker: Invalid Case");
+//                Log.d("unja", "MainActivity.addNewSticker: Invalid Case");
                 board.stickerPos = board.stickerPos - 1;
             } else {
                 Date currentDate = DateUtil.getCurrentDate();
-                Log.d("unja", "current date: "+currentDate);
+//                Log.d("unja", "current date: "+currentDate);
                 StickerHistoryManager.getInstance(MainActivity.this).addNewSticker(board_id, currentDate);
                 BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
-                Log.d("unja", "Board's StickerPos: "+board.stickerPos+", Date: "+(new Date()));
+//                Log.d("unja", "Board's StickerPos: "+board.stickerPos+", Date: "+(new Date()));
                 stickers.set(board.stickerPos - 1, new Sticker(currentDate));
                 updateTitleBasedOnCurrentBoard();
                 notifyDataSetChanged();

@@ -105,7 +105,7 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
         String userName = ((EditText)findViewById(R.id.edit_text_user_name)).getText().toString();
         String stickerSizeString = ((EditText)findViewById(R.id.edit_text_sticker_size)).getText().toString();
         Integer stickerSize = new Integer(0);
-        Log.d("unja", "sticker Size: "+stickerSizeString);
+//        Log.d("unja", "sticker Size: "+stickerSizeString);
         if (TextUtils.isEmpty(stickerSizeString) == false) {
             stickerSize = new Integer(stickerSizeString);
         }

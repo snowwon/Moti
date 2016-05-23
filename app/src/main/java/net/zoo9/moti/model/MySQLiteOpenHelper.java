@@ -23,7 +23,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("unja", "onCreate is invoked."+context.getString(R.string.moti_db_create));
+//        Log.d("unja", "onCreate is invoked."+context.getString(R.string.moti_db_create));
         SQLScriptRunner.runMultiStatement(db, context.getString(R.string.moti_db_create));
     }
 

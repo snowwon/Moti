@@ -19,7 +19,7 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         final int board_id_of_activated_board = BoardManager.getInstance(getApplicationContext()).getCurrentBoardId();
-        Log.d("unja", "activated board id: "+board_id_of_activated_board);
+//        Log.d("unja", "activated board id: "+board_id_of_activated_board);
 
         new Handler().postDelayed(new Runnable() {
             /*

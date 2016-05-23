@@ -32,7 +32,7 @@ public class GoalViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.delete_button) {
-            Log.d("unja", "click : delete button");
+//            Log.d("unja", "click : delete button");
             goalAdapter.removeGoalItem(Integer.parseInt(goal_id.getText().toString()), getAdapterPosition());
         } else {
             goalAdapter.toggleSelected(getAdapterPosition());

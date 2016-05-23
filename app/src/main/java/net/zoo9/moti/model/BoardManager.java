@@ -45,7 +45,7 @@ public class BoardManager {
 
         String sql = "insert into boards(assignee, goals, prize, number_of_stickers, current_pos_of_sticker, start_date, end_date) values (\'"
                 + userName + "\', \'"+listOfGoals+"\', \'"+prize+"\', "+stickerSize+", 0, date(\'now\'), null);";
-        Log.d("unja", "sql: " + sql);
+//        Log.d("unja", "sql: " + sql);
         mySQLiteHandler.executeSQL(sql);
 
         Cursor cursor = mySQLiteHandler.select("select _id from boards where assignee = ? and goals = ?", new String[]{userName, listOfGoals});

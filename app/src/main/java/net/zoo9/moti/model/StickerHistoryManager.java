@@ -55,7 +55,7 @@ public class StickerHistoryManager {
         }
 
         String deleteLastItemSQL = "delete from sticker_histories where board_id="+boardId+" and check_date=\'"+targetLastStickerCheckDate+"\'";
-        Log.d("unja", "sql string: "+deleteLastItemSQL);
+//        Log.d("unja", "sql string: "+deleteLastItemSQL);
         mySQLiteHandler.executeSQL(deleteLastItemSQL);
         return targetLastStickerCheckDate;
     }
