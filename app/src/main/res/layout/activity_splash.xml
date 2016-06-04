@@ -9,21 +9,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#FFFFFF"
     >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:orientation="vertical" android:layout_centerInParent="true"
+        android:paddingBottom="60dp">
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/splash_image"
+            android:layout_width="120dp" android:layout_height="120dp" android:layout_gravity="center_horizontal"
+            android:background="@drawable/splash_circle" android:layout_marginBottom="13dp"
+            android:layout_margin="3dp">
+            <TextView
+                android:layout_width="wrap_content" android:layout_gravity="center"
+                android:layout_height="wrap_content" android:textColor="@android:color/white" android:textStyle="bold"
+                android:text="Moti" android:textSize="28dp"/>
+        </FrameLayout>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/splash_image"
-        android:layout_width="120dp" android:layout_height="120dp" android:layout_centerInParent="true"
-        android:background="@drawable/splash_circle" android:layout_marginBottom="13dp"
-        android:layout_margin="3dp">
         <TextView
-            android:layout_width="wrap_content" android:layout_gravity="center"
-            android:layout_height="wrap_content" android:textColor="@android:color/white" android:textStyle="bold"
-            android:text="Moti" android:textSize="28dp"/>
-    </FrameLayout>
-
-    <TextView
-        android:layout_width="wrap_content" android:layout_below="@id/splash_image" android:layout_marginTop="13dp"
-        android:layout_height="wrap_content" android:layout_centerHorizontal="true"
-        android:textSize="20dp" android:textColor="@android:color/black" android:textStyle="bold"
-        android:text="Guide Your Kids"/>
+            android:layout_width="wrap_content" android:layout_below="@id/splash_image" android:layout_marginTop="17dp"
+            android:layout_height="wrap_content" android:layout_centerHorizontal="true"
+            android:textSize="20dp" android:textColor="@android:color/black" android:textStyle="bold"
+            android:text="Guide Your Kids"/>
+    </LinearLayout>
 </RelativeLayout>

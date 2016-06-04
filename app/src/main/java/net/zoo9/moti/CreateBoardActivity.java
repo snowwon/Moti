@@ -137,7 +137,7 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
         }
 
         if (TextUtils.isEmpty(prize)) {
-            Toast.makeText(context, "스티커판 완성 선물을 적어주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "스티커판 완성 선물을 입력해 주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
 

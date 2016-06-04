@@ -1,6 +1,7 @@
 package net.zoo9.moti.controller;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,9 @@ import net.zoo9.moti.model.Goal;
 import net.zoo9.moti.model.GoalManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -55,6 +58,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
         Goal item = goalList.get(position);
         holder.label.setText(item.goal_desc);
         holder.goal_id.setText(Integer.toString(item.id));
+        holder.hideTrashBin(item.is_default);
     }
 
     @Override
@@ -88,9 +92,19 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalViewHolder>{
     }
 
     public void addNewGoalWithSelected(Goal newGoal) {
-        goalList.add(newGoal);
-        int position = goalList.indexOf(newGoal);
-        this.selected.add(position);
+        goalList.add(0, newGoal);
+        updateSelectedWithNewOne();
+    }
+
+    private void updateSelectedWithNewOne() {
+        Set newOne = new HashSet<Integer>();
+
+        for (Integer selectedPos : selected) {
+            newOne.add(selectedPos+1);
+        }
+
+        newOne.add(0);
+        selected = newOne;
     }
 
     public ArrayList<String> getSelectedGoalList() {

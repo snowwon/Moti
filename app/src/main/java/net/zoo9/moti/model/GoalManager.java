@@ -29,11 +29,14 @@ public class GoalManager {
     public List<Goal> getDefaultGoals() {
         ArrayList<Goal> defaultGoals = new ArrayList<Goal>();
         MySQLiteHandler mySQLiteHandler = MySQLiteHandler.open(mContext);
-        Cursor cursor = mySQLiteHandler.select("select * from goals", null);
+        Cursor cursor = mySQLiteHandler.select("select * from goals order by _id desc", null);
         while (cursor.moveToNext()) {
             int goalId = cursor.getInt(0);
             String goalDesc = cursor.getString(1);
-            defaultGoals.add(new Goal(goalId, goalDesc));
+            boolean is_default = false;
+            if (cursor.getInt(2) >= 1) is_default = true;
+
+            defaultGoals.add(new Goal(goalId, goalDesc, is_default));
         }
 
         mySQLiteHandler.close();
@@ -51,8 +54,9 @@ public class GoalManager {
         while (cursor.moveToNext()) {
             int goalId = cursor.getInt(0);
             String goalDesc = cursor.getString(1);
+            boolean is_default = false;
 
-            newGoal = new Goal(goalId, goalDesc);
+            newGoal = new Goal(goalId, goalDesc, is_default);
         }
         return newGoal;
     }

@@ -1,6 +1,7 @@
 package net.zoo9.moti;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,7 +79,10 @@ public class SetGoalsDialgFragment extends DialogFragment {
                     Goal newGoal = GoalManager.getInstance(dialogView.getContext()).addNewGoal(newGoalText);
                     goalAdapter.addNewGoalWithSelected(newGoal);
                     goalAdapter.notifyDataSetChanged();
-                    linearLayoutManager.scrollToPosition(goalAdapter.getItemCount() - 1);
+                    linearLayoutManager.scrollToPosition(0);
+
+                    final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
                 }
 
             }
@@ -101,7 +106,7 @@ public class SetGoalsDialgFragment extends DialogFragment {
                     AlertDialog alertDialog = new AlertDialog.Builder(dialogView.getContext()).create();
                     alertDialog.setTitle("알림");
                     int targetSizeOfDeSelect = selectedGoals.size() - 3;
-                    alertDialog.setMessage("목표를 3개 이하 선택해 주세요.\n"+targetSizeOfDeSelect+" 개를 선택 취소해주세요.");
+                    alertDialog.setMessage("칭찬 주제는 최대 3개까지 선택할 수 있습니다. "+targetSizeOfDeSelect+" 개를 선택 취소해주세요.");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {

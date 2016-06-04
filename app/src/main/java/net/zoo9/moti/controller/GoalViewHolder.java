@@ -17,6 +17,7 @@ public class GoalViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public TextView label;
     public TextView goal_id;
     public ImageButton delete_image_view;
+    public boolean removable = false;
     GoalAdapter goalAdapter = null;
 
     public GoalViewHolder(View itemView, GoalAdapter goalAdapter) {
@@ -26,6 +27,7 @@ public class GoalViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         delete_image_view = (ImageButton) itemView.findViewById(R.id.delete_button);
         itemView.setOnClickListener(this);
         delete_image_view.setOnClickListener(this);
+
         this.goalAdapter = goalAdapter;
     }
 
@@ -36,6 +38,14 @@ public class GoalViewHolder extends RecyclerView.ViewHolder implements View.OnCl
             goalAdapter.removeGoalItem(Integer.parseInt(goal_id.getText().toString()), getAdapterPosition());
         } else {
             goalAdapter.toggleSelected(getAdapterPosition());
+        }
+    }
+
+    public void hideTrashBin(boolean is_default) {
+        if (is_default == true) {
+            ((ImageButton) itemView.findViewById(R.id.delete_button)).setVisibility(View.INVISIBLE);
+        } else {
+            ((ImageButton) itemView.findViewById(R.id.delete_button)).setVisibility(View.VISIBLE);
         }
     }
 }

@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity  {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getProperGridNumber());
         gridLayoutManager.scrollToPosition(board.stickerPos);
+
         recyclerView.setLayoutManager(gridLayoutManager);
 
         List<Sticker> stickers = null;
@@ -222,16 +223,16 @@ public class MainActivity extends AppCompatActivity  {
 //            Log.d("unja", "sticker pos vs size: "+board.stickerPos+" - "+board.stickerSize);
             if (board.stickerPos == board.stickerSize) {
                 StringBuffer message = new StringBuffer();
-                message.append("축하합니다!\n\n").append(board.userName).append(" 님의 스티커판이 완성되었습니다.\n\n")
-                    .append("상으로 \'").append(board.prize).append("\' 선물을 받으실 수 있습니다.\n");
+                message.append("축하합니다!\n\n").append(board.userName).append(" 님의 칭찬 스티커판이 완성되었습니다.\n\n")
+                    .append("상으로 \'").append(board.prize).append("\' 선물을 받을 수 있습니다.\n");
                 new AlertDialog.Builder(MainActivity.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("스티커 완성")
+                        .setTitle("칭찬 스티커판 완성")
                         .setMessage(message.toString())
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String toastMessage = "수고하셨습니다. 완성한 스티커판은 ‘지난 칭찬 스티커판 보기’ 메뉴에서 확인할 수 있습니다";
+                                String toastMessage = "축하합니. 완성한 스티커판은 ‘지난 칭찬 스티커판 보기’ 메뉴에서 확인할 수 있습니다";
                                 Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
 
                                 BoardManager.getInstance(MainActivity.this).getBoardEnded(board.boardId);
@@ -331,7 +332,7 @@ public class MainActivity extends AppCompatActivity  {
     public void runNewStickerProcess() {
         new AlertDialog.Builder(MainActivity.this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("스티커 붙이기")
+                .setTitle("스티커 추가")
                 .setMessage("스트커를 추가하시겠습니까?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener()
                 {
