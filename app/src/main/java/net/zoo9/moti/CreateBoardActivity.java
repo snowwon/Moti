@@ -127,12 +127,12 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
         }
 
         if (stickerSize <= 0) {
-            Toast.makeText(context, "0보다 큰 스티커 개수를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "스티커 개수를 넣어주세요. (최대 50개)", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (TextUtils.isEmpty(listOfGoals)) {
-            Toast.makeText(context, "목표를 설정해 주세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "칭찬 주제를 넣어주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
 

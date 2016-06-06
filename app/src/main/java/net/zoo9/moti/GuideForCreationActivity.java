@@ -1,6 +1,7 @@
 package net.zoo9.moti;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -46,10 +47,14 @@ public class GuideForCreationActivity extends AppCompatActivity {
         super.onResume();
 
         List<Board> previousBoards = BoardManager.getInstance(GuideForCreationActivity.this).getPastBoards();
+
+        Button button = (Button) findViewById(R.id.go_to_previous_boards_activity);
+        button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
         if (previousBoards != null && previousBoards.size() > 0) {
-            ((Button) findViewById(R.id.go_to_previous_boards_activity)).setVisibility(View.VISIBLE);
+            button.setVisibility(View.VISIBLE);
         } else {
-            ((Button) findViewById(R.id.go_to_previous_boards_activity)).setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
         }
 
     }

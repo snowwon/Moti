@@ -102,11 +102,18 @@ public class MainActivity extends AppCompatActivity  {
                 addNewSticker();
             }
         });
+
+        if (isReadOnlyMode == true) {
+            fab.setVisibility(View.INVISIBLE);
+        } else {
+            fab.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        board = null;
 //        Log.d("unja", "Main Activity's onResume was invoked.");
         Intent intent = getIntent();
         int board_id = -1;
@@ -175,6 +182,12 @@ public class MainActivity extends AppCompatActivity  {
                 addNewSticker();
             }
         });
+
+        if (isReadOnlyMode == true) {
+            fab.setVisibility(View.INVISIBLE);
+        } else {
+            fab.setVisibility(View.VISIBLE);
+        }
     }
 
     private int getProperGridNumber() {

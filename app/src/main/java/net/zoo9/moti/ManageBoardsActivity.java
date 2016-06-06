@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.zoo9.moti.model.Board;
 import net.zoo9.moti.model.BoardManager;
@@ -97,9 +98,14 @@ public class ManageBoardsActivity extends AppCompatActivity {
 
     public void removePastBoard(int boardId) {
         // delete the target board from database.
+        Board targetBoard = BoardManager.getInstance(ManageBoardsActivity.this).getBoard(boardId);
         BoardManager.getInstance(ManageBoardsActivity.this).removeBoard(boardId);
+        String userName = targetBoard.userName;
         // update the recylerview.
         pastBoardsRecylerAdapter.removePastBoard(boardId);
+
+        String toastMessage = userName+" 님의 스티커판이 삭제되었습니다.";
+        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
 
         List<Board> boards = null;
         boards = BoardManager.getInstance(ManageBoardsActivity.this).getPastBoards();
