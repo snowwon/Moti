@@ -10,3 +10,6 @@
         android:gravity="center" android:textColor="#ffffff"
         />
 </FrameLayout>
+
+
+    <!--android:background="@drawable/sticker_clicked"-->

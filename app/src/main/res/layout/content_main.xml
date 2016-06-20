@@ -50,7 +50,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView android:id="@+id/achieve_board_container"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="7dp"
         android:layout_below="@id/upper_zone" >
