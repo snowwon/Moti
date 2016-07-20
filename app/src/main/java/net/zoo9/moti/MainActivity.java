@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity  {
 
     public void runNewStickerProcess() {
         new AlertDialog.Builder(MainActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(null)
                 .setTitle("스티커 추가")
                 .setMessage("스트커를 추가하시겠습니까?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener()
@@ -367,7 +367,7 @@ public class MainActivity extends AppCompatActivity  {
         String checkedDateString = sm.format(targetSticker.checkedDate);
 
         new AlertDialog.Builder(MainActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(null)
                 .setTitle("스티커 삭제")
                 .setMessage("붙였던 "+checkedDateString+"일 스티커를 삭제하시겠습니까?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener()
@@ -477,42 +477,10 @@ public class MainActivity extends AppCompatActivity  {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        /**
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_current_board) {
-            int board_id_of_activated_board = BoardManager.getInstance(getApplicationContext()).getCurrentBoardId();
-            Log.d("unja", "activated_board : "+board_id_of_activated_board );
-            if (board_id_of_activated_board < 0) {
-                Intent intent = new Intent(MainActivity.this, GuideForCreationActivity.class);
-                startActivity(intent);
-            } else {
-                loadCurrentActivatedBoard(board_id_of_activated_board);
-            }
-        } else if (id == R.id.action_add_board) {
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("새 스티커판 만들기")
-                    .setMessage("현재 진행 중인 스티커 판은 중도 포기하고, 새로 만들어지게 됩니다. 새로 만드시겠습니까?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            BoardManager.getInstance(MainActivity.this).getBoardEnded(board.boardId);
-                            startActivity(new Intent(MainActivity.this, CreateBoardActivity.class));
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-
-        } else
-
-        **/
-
         if (id == R.id.action_delete_board) {
             // show the confirm dialog to check whether user really wanna delete the current board.
             new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(null)
                     .setTitle("스티커판 삭제")
                     .setMessage("진행 중인 "+board.userName+"님 칭찬스티커 판을 삭제하시겠습니까?")
                     .setPositiveButton("삭제", new DialogInterface.OnClickListener()

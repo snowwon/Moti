@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:hint="최대 50개까지 스티커 개수를 입력해 주세요." />
+            android:hint="최대 100개까지 스티커 개수를 입력해 주세요." />
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout android:orientation="horizontal"

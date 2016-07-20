@@ -25,7 +25,7 @@ import net.zoo9.moti.model.BoardManager;
 import java.util.List;
 
 public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDialgFragment.SetGoalDialogFragmentInterface {
-    public static final int MAX_SIZE_OF_STICKERS = 50;
+    public static final int MAX_SIZE_OF_STICKERS = 100;
     private Context context;
 
     @Override
@@ -60,8 +60,8 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
                 if ( s == null || s.toString().trim().equals("")) {return;}
                 int sizeOfBoard = Integer.parseInt(s.toString());
                 if (sizeOfBoard > MAX_SIZE_OF_STICKERS) {
-                    Toast.makeText(CreateBoardActivity.this, "스티커 개수는 최대 50개 입니다.", Toast.LENGTH_SHORT).show();
-                    s.replace(0, s.length(), "50");
+                    Toast.makeText(CreateBoardActivity.this, "스티커 개수는 최대 "+MAX_SIZE_OF_STICKERS+"개 입니다.", Toast.LENGTH_SHORT).show();
+                    s.replace(0, s.length(), Integer.toString(MAX_SIZE_OF_STICKERS));
                 }
             }
 
@@ -127,7 +127,7 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
         }
 
         if (stickerSize <= 0) {
-            Toast.makeText(context, "스티커 개수를 넣어주세요. (최대 50개)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "스티커 개수를 넣어주세요. (최대 "+MAX_SIZE_OF_STICKERS+"개)", Toast.LENGTH_SHORT).show();
             return false;
         }
 

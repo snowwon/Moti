@@ -104,6 +104,7 @@ public class SetGoalsDialgFragment extends DialogFragment {
 
                 if (selectedGoals.size() > 3) {
                     AlertDialog alertDialog = new AlertDialog.Builder(dialogView.getContext()).create();
+                    alertDialog.setIcon(null);
                     alertDialog.setTitle("알림");
                     int targetSizeOfDeSelect = selectedGoals.size() - 3;
                     alertDialog.setMessage("칭찬 주제는 최대 3개까지 선택할 수 있습니다. "+targetSizeOfDeSelect+" 개를 선택 취소해주세요.");
