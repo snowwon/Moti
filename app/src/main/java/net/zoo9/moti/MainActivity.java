@@ -23,6 +23,7 @@ import net.zoo9.moti.model.Board;
 import net.zoo9.moti.model.BoardManager;
 import net.zoo9.moti.model.StickerHistoryManager;
 import net.zoo9.moti.util.DateUtil;
+import net.zoo9.moti.util.WrapGridLayoutManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,14 +76,12 @@ public class MainActivity extends AppCompatActivity  {
         ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getProperGridNumber());
+        WrapGridLayoutManager gridLayoutManager = new WrapGridLayoutManager(this, getProperGridNumber());
         gridLayoutManager.scrollToPosition(board.stickerPos);
 
         recyclerView.setLayoutManager(gridLayoutManager);
 
         List<Sticker> stickers = null;
-
-
         List<Date> checkedDates = null;
         try {
             checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/txt_label_item"
     android:background="@drawable/sticker_unclicked"
     android:layout_width="80dp"
     android:layout_height="80dp"
-    android:layout_margin="3dp"
-    android:gravity="center" android:textColor="#ffffff"
+    android:layout_margin="6dp"
+    android:gravity="center" android:textColor="@color/cardview_dark_background"
     />
 
 <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
