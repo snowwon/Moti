@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/txt_label_item"
-    android:background="@drawable/sticker_clicked"
-    android:layout_width="80dp"
-    android:layout_height="80dp"
-    android:layout_margin="6dp"
-    android:gravity="center" android:textColor="#ffffff"
-    />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="70dp" android:layout_height="70dp"
+    android:layout_margin="4dp" >
+    <ImageView
+        android:src="@drawable/sticker_clicked"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        />
 
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="0.4in" android:layout_height="0.5in"-->
-    <!--android:background="@drawable/sticker_clicked"-->
-    <!--android:id="@+id/sticker_background" android:layout_margin="3dp">-->
-
-    <!--<TextView android:id="@+id/txt_label_item"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:gravity="center" android:textColor="#ffffff"-->
-        <!--/>-->
-<!--</FrameLayout>-->
-
-
-    <!--android:background="@drawable/sticker_clicked"-->
+    <TextView android:id="@+id/txt_label_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" android:textColor="#ffffff"
+        />
+</FrameLayout>

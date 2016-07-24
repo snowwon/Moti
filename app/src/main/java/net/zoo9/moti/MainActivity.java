@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity  {
     private StickerRecycleAdapter stickerRecyclerAdapter = null;
     private boolean isReadOnlyMode = false;
 
-    private final static int STICKER_WIDTH_IN_DP = 86;
+    private final static int STICKER_WIDTH_IN_DP = 90;
 
 
     @Override
@@ -76,7 +76,9 @@ public class MainActivity extends AppCompatActivity  {
         ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
+//        WrapGridLayoutManager gridLayoutManager = new WrapGridLayoutManager(this, getProperGridNumber());
         WrapGridLayoutManager gridLayoutManager = new WrapGridLayoutManager(this, getProperGridNumber());
+
         gridLayoutManager.scrollToPosition(board.stickerPos);
 
         recyclerView.setLayoutManager(gridLayoutManager);
