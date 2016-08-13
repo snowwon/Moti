@@ -78,7 +78,7 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
         ((Button)findViewById(R.id.btn_cancel)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context, MainActivity.class));
+                startActivity(new Intent(context, GuideForCreationActivity.class));
                 finish();
             }
         });
