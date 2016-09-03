@@ -1,9 +1,11 @@
 package net.zoo9.moti.model;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
 
+import net.zoo9.moti.MainActivity;
 import net.zoo9.moti.util.DateUtil;
 
 import java.text.ParseException;

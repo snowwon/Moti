@@ -1,12 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <!--
-    <item android:id="@+id/action_current_board" android:title="진행 중 스티커판으로 돌아가기"
+    <item android:id="@+id/action_manange_alerts" android:title="알림 설정"
         android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_add_board" android:title="스티커판 추가"
-        android:orderInCategory="100" app:showAsAction="never" />
-    -->
     <item android:id="@+id/action_delete_board" android:title="진행 중 스티커판 삭제"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_manage_boards" android:title="지난 스티커판 보기"

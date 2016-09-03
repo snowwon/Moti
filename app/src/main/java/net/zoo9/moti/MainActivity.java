@@ -2,6 +2,7 @@ package net.zoo9.moti;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -166,7 +167,10 @@ public class MainActivity extends AppCompatActivity  {
 
         List<Date> checkedDates = null;
         try {
+            Log.d("unja66", "board:"+board);
+            Log.d("unja66", "board.boardId-"+board.boardId);
             checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
+            Log.d("unja66", "checkedDates-"+checkedDates);
             stickers = getStickersWithDates(checkedDates, board.stickerSize);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -222,9 +226,16 @@ public class MainActivity extends AppCompatActivity  {
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 
-
+    public void saveTheLastActivityTimeIntoSharedPreference() {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("alert", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong("last_update_time_in_mills", System.currentTimeMillis());
+        editor.commit();
+    }
 
     private void addNewSticker() {
+
+
         int board_id = board.boardId;
 //        Log.d("unja", "addNewSticker to "+board_id);
         if (isReadOnlyMode) {
@@ -446,14 +457,11 @@ public class MainActivity extends AppCompatActivity  {
         public void addNewSticker(int board_id) {
             board.stickerPos = board.stickerPos + 1;
             if (stickers.size() <= (board.stickerPos - 1)) {
-//                Log.d("unja", "MainActivity.addNewSticker: Invalid Case");
                 board.stickerPos = board.stickerPos - 1;
             } else {
                 Date currentDate = DateUtil.getCurrentDate();
-//                Log.d("unja", "current date: "+currentDate);
                 StickerHistoryManager.getInstance(MainActivity.this).addNewSticker(board_id, currentDate);
                 BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
-//                Log.d("unja", "Board's StickerPos: "+board.stickerPos+", Date: "+(new Date()));
                 stickers.set(board.stickerPos - 1, new Sticker(currentDate));
                 updateTitleBasedOnCurrentBoard();
                 notifyDataSetChanged();
@@ -502,7 +510,8 @@ public class MainActivity extends AppCompatActivity  {
             return true;
         } else if (id == android.R.id.home) {
             finish();
-        }
+        } else if (id == R.id.action_manange_alerts)
+            startActivity(new Intent(this, ManageAlertsActivity.class));
 
         return super.onOptionsItemSelected(item);
     }
