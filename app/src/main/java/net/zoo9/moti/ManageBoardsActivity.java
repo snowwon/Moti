@@ -38,29 +38,6 @@ public class ManageBoardsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("지난 스티커판 보기");
 
-
-//        TextView noPreviousBoardMsg = (TextView) findViewById(R.id.msg_for_no_previous_board);
-//
-//
-//        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.list_of_past_boards);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ManageBoardsActivity.this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//
-//        List<Board> boards = null;
-//        boards = BoardManager.getInstance(ManageBoardsActivity.this).getPastBoards();
-//
-//        if (boards.size() == 0) {
-//            recyclerView.setVisibility(View.GONE);
-//            noPreviousBoardMsg.setVisibility(View.VISIBLE);
-//        } else {
-//            recyclerView.setVisibility(View.VISIBLE);
-//            noPreviousBoardMsg.setVisibility(View.GONE);
-//        }
-//
-//        pastBoardsRecylerAdapter = new PastBoardsRecylerAdapter (boards, R.layout.past_boards_item_layout);
-//        recyclerView.setAdapter(pastBoardsRecylerAdapter);
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -81,7 +58,6 @@ public class ManageBoardsActivity extends AppCompatActivity {
         List<Board> boards = null;
         boards = BoardManager.getInstance(ManageBoardsActivity.this).getPastBoards();
 
-//        Log.d("unja", "boards length: "+boards.size());
         if (boards.size() == 0) {
             recyclerView.setVisibility(View.GONE);
             noPreviousBoardMsg.setVisibility(View.VISIBLE);

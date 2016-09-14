@@ -20,7 +20,9 @@ public class MyRemindMessageReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("alert", Context.MODE_PRIVATE);
-        Long lastUpdateTimeInMills = sharedPreferences.getLong("last_update_time_in_mills", System.currentTimeMillis());
+        // get the last alarm time and if there's no value for the last update time, I will get the previous day time.
+        Long lastUpdateTimeInMills = sharedPreferences.getLong("last_update_time_in_mills",
+                System.currentTimeMillis()-(24 * 60 * 60 * 1000));
 
         Calendar lastUpdateDate = Calendar.getInstance();
         lastUpdateDate.setTimeInMillis(lastUpdateTimeInMills);
@@ -28,7 +30,10 @@ public class MyRemindMessageReceiver extends BroadcastReceiver{
         Calendar today = Calendar.getInstance();
         today.setTimeInMillis(System.currentTimeMillis());
 
+        Log.d("unja66", "Reminder Was Received."+lastUpdateDate.get(Calendar.DATE)+" vs "+today.get(Calendar.DATE));
+
         if (lastUpdateDate.get(Calendar.DATE) != today.get(Calendar.DATE)) {
+            // if user didn't check the board in a day, I will show the message for reminding.
             showNotificatioMessage(context);
         }
     }

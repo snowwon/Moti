@@ -43,80 +43,13 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Log.d("unja", "Main Activity's onCreate was invoked.");
-        Intent intent = getIntent();
-        int board_id = -1;
-        if (intent != null) {
-            board_id = intent.getIntExtra("board_id", -1);
-        }
-
-        if (board_id >= 1) {
-            board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id);
-        } else {
-            // invalid case. Let the user see the board creation page.
-            Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
-            startActivity(iWannaGoToCreateActivity);
-        }
-
-//        Log.d("unja", "main activity board: "+board);
-
-
-        String mode = intent.getStringExtra("mode");
-        if (mode != null && (mode.equalsIgnoreCase("r") == true)) {
-            isReadOnlyMode = true;
-        }
-
-        // initialBoardUI()
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        updateTitleBasedOnCurrentBoard();
-
-        // set prize and list of goals in the above of the board.
-        ((TextView)findViewById(R.id.textview_prize)).setText(board.prize);
-        ((TextView)findViewById(R.id.textview_goals)).setText(board.listOfGoals);
-
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
-//        WrapGridLayoutManager gridLayoutManager = new WrapGridLayoutManager(this, getProperGridNumber());
-        WrapGridLayoutManager gridLayoutManager = new WrapGridLayoutManager(this, getProperGridNumber());
-
-        gridLayoutManager.scrollToPosition(board.stickerPos);
-
-        recyclerView.setLayoutManager(gridLayoutManager);
-
-        List<Sticker> stickers = null;
-        List<Date> checkedDates = null;
-        try {
-            checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
-            stickers = getStickersWithDates(checkedDates, board.stickerSize);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-        stickerRecyclerAdapter = new StickerRecycleAdapter(stickers, R.layout.sticker_item_layout);
-        recyclerView.setAdapter(stickerRecyclerAdapter);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addNewSticker();
-            }
-        });
-
-        if (isReadOnlyMode == true) {
-            fab.setVisibility(View.INVISIBLE);
-        } else {
-            fab.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         board = null;
-//        Log.d("unja", "Main Activity's onResume was invoked.");
+
         Intent intent = getIntent();
         int board_id = -1;
         if (intent != null) {
@@ -126,16 +59,11 @@ public class MainActivity extends AppCompatActivity  {
         if (board_id >= 1) {
             board = BoardManager.getInstance(getApplicationContext()).getBoard(board_id);
         } else {
-            // invalid case. Let the user see the board creation page.
-//            Log.d("unja", "MainActivity: invalid case. Let the user see the board creation page.");
             Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
             startActivity(iWannaGoToCreateActivity);
             finish();
             return;
         }
-
-//        Log.d("unja", "main activity board: "+board);
-
 
         String mode = intent.getStringExtra("mode");
         if (mode != null && (mode.equalsIgnoreCase("r") == true)) {
@@ -159,18 +87,15 @@ public class MainActivity extends AppCompatActivity  {
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.achieve_board_container);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, getProperGridNumber());
-        gridLayoutManager.scrollToPosition(board.stickerPos);
         recyclerView.setLayoutManager(gridLayoutManager);
 
         List<Sticker> stickers = null;
-
-
         List<Date> checkedDates = null;
         try {
             Log.d("unja66", "board:"+board);
-            Log.d("unja66", "board.boardId-"+board.boardId);
+            Log.d("unja66", "board.boardId:"+board.boardId);
             checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
-            Log.d("unja66", "checkedDates-"+checkedDates);
+            Log.d("unja66", "checkedDates:"+checkedDates);
             stickers = getStickersWithDates(checkedDates, board.stickerSize);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -245,34 +170,39 @@ public class MainActivity extends AppCompatActivity  {
 
         if (board_id >= 0) {
             stickerRecyclerAdapter.addNewSticker(board_id);
-//            Log.d("unja", "sticker pos vs size: "+board.stickerPos+" - "+board.stickerSize);
-            if (board.stickerPos == board.stickerSize) {
-                StringBuffer message = new StringBuffer();
-                message.append("축하합니다!\n\n").append(board.userName).append(" 님의 칭찬 스티커판이 완성되었습니다.\n\n")
-                    .append("상으로 \'").append(board.prize).append("\' 선물을 받을 수 있습니다.\n");
-                new AlertDialog.Builder(MainActivity.this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("칭찬 스티커판 완성")
-                        .setMessage(message.toString())
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String toastMessage = "축하합니. 완성한 스티커판은 ‘지난 칭찬 스티커판 보기’ 메뉴에서 확인할 수 있습니다";
-                                Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
 
-                                BoardManager.getInstance(MainActivity.this).getBoardEnded(board.boardId);
-                                Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
-                                startActivity(iWannaGoToCreateActivity);
-                                finish();
-                            }
-                        })
-                        .show();
+            if (board.stickerPos == board.stickerSize) {
+                showMeesageForCompletion();
             } else {
+
                 Toast.makeText(MainActivity.this, "참! 잘했어요.\n" + "스티커 1개가 추가되었습니다.", Toast.LENGTH_SHORT).show();
             }
         } else {
             Log.e("unja", "invalid board id : " + board_id);
         }
+    }
+
+    private void showMeesageForCompletion() {
+        StringBuffer message = new StringBuffer();
+        message.append("축하합니다!\n\n").append(board.userName).append(" 님의 칭찬 스티커판이 완성되었습니다.\n\n")
+            .append("상으로 \'").append(board.prize).append("\' 선물을 받을 수 있습니다.\n");
+        new AlertDialog.Builder(MainActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("칭찬 스티커판 완성")
+                .setMessage(message.toString())
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String toastMessage = "축하합니. 완성한 스티커판은 ‘지난 칭찬 스티커판 보기’ 메뉴에서 확인할 수 있습니다";
+                        Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+
+                        BoardManager.getInstance(MainActivity.this).getBoardEnded(board.boardId);
+                        Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
+                        startActivity(iWannaGoToCreateActivity);
+                        finish();
+                    }
+                })
+                .show();
     }
 
     private void notifyReadMode() {
@@ -455,14 +385,18 @@ public class MainActivity extends AppCompatActivity  {
         }
 
         public void addNewSticker(int board_id) {
+            Log.d("unja66", "added new sticker to : "+board.toString());
             board.stickerPos = board.stickerPos + 1;
             if (stickers.size() <= (board.stickerPos - 1)) {
-                board.stickerPos = board.stickerPos - 1;
+                board.stickerPos = stickers.size();
             } else {
                 Date currentDate = DateUtil.getCurrentDate();
                 StickerHistoryManager.getInstance(MainActivity.this).addNewSticker(board_id, currentDate);
                 BoardManager.getInstance(MainActivity.this).updateStickerPosition(board_id, board.stickerPos);
+
                 stickers.set(board.stickerPos - 1, new Sticker(currentDate));
+
+                saveTheLastActivityTimeIntoSharedPreference();
                 updateTitleBasedOnCurrentBoard();
                 notifyDataSetChanged();
             }

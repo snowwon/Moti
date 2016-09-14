@@ -34,12 +34,14 @@
             android:layout_width="wrap_content" android:layout_alignParentRight="true"
             android:layout_height="wrap_content" android:orientation="horizontal"
             android:layout_alignParentBottom="true">
-            <ImageButton android:id="@+id/btn_view_details" android:backgroundTint="@color/colorPrimary"
+            <Button android:id="@+id/btn_view_details" android:background="#CFD8DC"
                 android:layout_width="wrap_content" android:layout_gravity="bottom"
-                android:layout_height="wrap_content" android:src="@drawable/ic_remove_red_eye_white_24dp"/>
-            <ImageButton android:id="@+id/btn_delete"
-                android:layout_width="wrap_content" android:backgroundTint="@color/colorPrimary"
-                android:layout_height="wrap_content" android:src="@drawable/ic_delete_white_24dp"/>
+                android:layout_height="wrap_content" android:text="보기" android:padding="12dp" android:layout_margin="0dp"
+                android:minHeight="0dp" android:minWidth="0dp"/>
+            <Button android:id="@+id/btn_delete"
+                android:layout_width="wrap_content" android:background="#CFD8DC"
+                android:layout_height="wrap_content" android:text="제거" android:layout_marginLeft="3dp" android:padding="12dp"
+                android:minHeight="0dp" android:minWidth="0dp"/>
         </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>
