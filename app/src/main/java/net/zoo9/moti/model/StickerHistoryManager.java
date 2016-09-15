@@ -40,10 +40,10 @@ public class StickerHistoryManager {
         Cursor cursor = mySQLiteHandler.select("select check_date, board_id from sticker_histories where board_id = ? order by check_date asc", new String[]{Integer.toString(boardId)});
         cursor.moveToFirst();
         int count = 0;
-        String targetLastStickerCheckDate = null;
+        String targetStickerCheckDate = null;
         while (true) {
             if (count == pos_in_data) {
-                targetLastStickerCheckDate = cursor.getString(cursor.getColumnIndex("check_date"));
+                targetStickerCheckDate = cursor.getString(cursor.getColumnIndex("check_date"));
                 break;
             } else {
                 count = count + 1;
@@ -51,15 +51,18 @@ public class StickerHistoryManager {
             }
         }
 
-        if (targetLastStickerCheckDate == null) {
+        Log.d("unja66", "target Last Sticker Check Date: "+targetStickerCheckDate);
+
+        if (targetStickerCheckDate == null) {
             Log.e("unja", "We failed at finding the matched sticker at removeStickeAt method");
             return null;
         }
 
-        String deleteLastItemSQL = "delete from sticker_histories where board_id="+boardId+" and check_date=\'"+targetLastStickerCheckDate+"\'";
+        String deleteLastItemSQL = "delete from sticker_histories where board_id="+boardId+" and check_date=\'"+targetStickerCheckDate+"\'";
 //        Log.d("unja", "sql string: "+deleteLastItemSQL);
         mySQLiteHandler.executeSQL(deleteLastItemSQL);
-        return targetLastStickerCheckDate;
+
+        return targetStickerCheckDate;
     }
 
     public void addNewSticker(int boardId, Date currentDate) {

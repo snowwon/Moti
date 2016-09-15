@@ -215,13 +215,21 @@ public class MainActivity extends AppCompatActivity  {
             return;
         }
 
-//        Log.d("unja", "clicked pos: " +pos_in_adapter);
+
+        String deletedItemDate = StickerHistoryManager.getInstance(MainActivity.this).removeStickerAtAndReturnDateString(board.boardId, pos_in_adapter);
+        Log.d("unja", "deleted item's date: "+deletedItemDate);
 
         board.stickerPos = board.stickerPos - 1;
-        String deletedItemDate = StickerHistoryManager.getInstance(MainActivity.this).removeStickerAtAndReturnDateString(board.boardId, pos_in_adapter);
-//        Log.d("unja", "deleted item's date: "+deletedItemDate);
         BoardManager.getInstance(MainActivity.this).updateStickerPosition(board.boardId, board.stickerPos);
-        stickerRecyclerAdapter.stickers.set(board.stickerPos, new Sticker());
+        // First of all, I need to remove the selected sticker from stickers.
+        Log.d("unja66", "before: "+stickerRecyclerAdapter.stickers);
+        Log.d("unja66", "length: "+stickerRecyclerAdapter.stickers.size());
+        stickerRecyclerAdapter.stickers.remove(pos_in_adapter);
+        stickerRecyclerAdapter.stickers.add(new Sticker());
+        Log.d("unja66", "length: "+stickerRecyclerAdapter.stickers.size());
+        Log.d("unja66", "after: "+stickerRecyclerAdapter.stickers);
+
+
         updateTitleBasedOnCurrentBoard();
         stickerRecyclerAdapter.notifyDataSetChanged();
         Toast.makeText(MainActivity.this, "저런 ...\n" + "스티커 1개가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
@@ -307,6 +315,7 @@ public class MainActivity extends AppCompatActivity  {
 
         SimpleDateFormat sm = new SimpleDateFormat("MM/dd");
         String checkedDateString = sm.format(targetSticker.checkedDate);
+        Log.d("unja66", "selected pos: "+pos_in_adapter);
 
         new AlertDialog.Builder(MainActivity.this)
                 .setIcon(null)
