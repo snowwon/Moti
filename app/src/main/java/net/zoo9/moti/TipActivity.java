@@ -38,7 +38,7 @@ public class TipActivity extends AppCompatActivity {
         WebView webView = (WebView) findViewById(R.id.webViewForTip);
         String customHtml = this.getString(R.string.tip_html);
         webView.loadData(customHtml, "text/html; charset=UTF-8", null);
-
+        //Log.d("unja66", customHtml);
     }
 
     @Override
