@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="칭찬 받을 아이의 이름을 입력해 주세요." />
+            android:hint="칭찬 받을 아이의 이름은요?" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout android:layout_marginTop="15dp"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:hint="최대 100개까지 스티커 개수를 입력해 주세요." />
+            android:hint="스티커는 몇 개까지 만들까? (최대 100개)." />
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout android:orientation="horizontal"
@@ -40,12 +40,13 @@
         <TextView
             android:textSize="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:text="칭찬 주제" android:gravity="center_vertical"/>
+            android:layout_height="wrap_content" android:text="칭찬 주제를 추가해주세요" android:gravity="center_vertical"/>
         <Button android:id="@+id/btn_set_goals"
-            android:layout_marginLeft="20dp" android:paddingLeft="13dp" android:paddingRight="13dp"
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content" android:background="@color/colorPrimary"
-            android:paddingTop="5dp" android:paddingBottom="5dp"
-            android:layout_height="wrap_content" android:text="칭찬 주제를 추가해 주세요."/>
+            android:paddingLeft="13dp" android:paddingRight="13dp"
+            android:paddingTop="8dp" android:paddingBottom="8dp" android:minHeight="0dp" android:minWidth="0dp"
+            android:layout_height="wrap_content" android:text="추가하기" />
     </LinearLayout>
 
     <android.support.v7.widget.CardView card_view:cardCornerRadius="5dp"
@@ -67,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="스티커판 완성 선물을 입력해 주세요." />
+            android:hint="완성하면 받고 싶은 선물은요?" />
     </android.support.design.widget.TextInputLayout>
 
     <GridLayout android:orientation="horizontal"
@@ -81,7 +82,7 @@
         <Button android:id="@+id/btn_create_board"
             android:layout_gravity="fill|right" android:layout_columnWeight="1"
             android:layout_width="wrap_content" android:background="@color/colorPrimary"
-            android:layout_height="wrap_content" android:text="스티커판 추가"/>
+            android:layout_height="wrap_content" android:text="만들기"/>
     </GridLayout>
 
 </LinearLayout>

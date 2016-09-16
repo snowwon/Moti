@@ -7,4 +7,6 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_manage_boards" android:title="지난 스티커판 보기"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/tips" android:title="칭찬 스티커 사용팁"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

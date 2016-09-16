@@ -453,6 +453,9 @@ public class MainActivity extends AppCompatActivity  {
             return true;
         } else if (id == android.R.id.home) {
             finish();
+        } else if (id == R.id.tips) {
+            startActivity(new Intent(this, TipActivity.class));
+            return true;
         } else if (id == R.id.action_manange_alerts)
             startActivity(new Intent(this, ManageAlertsActivity.class));
 

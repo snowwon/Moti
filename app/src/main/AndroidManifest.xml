@@ -31,7 +31,10 @@
         </activity>
         <activity
             android:name=".ManageAlertsActivity"
-            android:label="@string/title_activity_manage_boards"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".TipActivity"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity android:name=".GuideForCreationActivity" >

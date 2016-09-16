@@ -34,7 +34,7 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
         setContentView(R.layout.activity_create_board);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("스티커판 추가");
+        getSupportActionBar().setTitle("스티커판 만들기");
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -122,17 +122,17 @@ public class CreateBoardActivity extends AppCompatActivity implements SetGoalsDi
 
     private boolean validateInputs(String userName, Integer stickerSize, String listOfGoals, String prize) {
         if (TextUtils.isEmpty(userName)) {
-            Toast.makeText(context, "칭찬 받을 아이의 이름을 넣어주세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "칭찬 받을 아이의 이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (stickerSize <= 0) {
-            Toast.makeText(context, "스티커 개수를 넣어주세요. (최대 "+MAX_SIZE_OF_STICKERS+"개)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "스티커 개수를 입력해주세요. (최대 "+MAX_SIZE_OF_STICKERS+"개)", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (TextUtils.isEmpty(listOfGoals)) {
-            Toast.makeText(context, "칭찬 주제를 넣어주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "칭찬 주제를 추가해주세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
 
