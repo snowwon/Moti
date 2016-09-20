@@ -11,7 +11,7 @@ public class Board {
     public Integer stickerSize;
     public String listOfGoals;
     public String prize;
-    public int stickerPos;
+    public int stickerPos; // 최종 스티커 위치를 나타내는 값. 아무것도 없으면 0, 1개 붙었으면 1.
     public String endDate;
     public String startDate;
 

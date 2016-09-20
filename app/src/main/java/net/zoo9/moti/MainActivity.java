@@ -24,7 +24,6 @@ import net.zoo9.moti.model.Board;
 import net.zoo9.moti.model.BoardManager;
 import net.zoo9.moti.model.StickerHistoryManager;
 import net.zoo9.moti.util.DateUtil;
-import net.zoo9.moti.util.WrapGridLayoutManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,11 +91,15 @@ public class MainActivity extends AppCompatActivity  {
         List<Sticker> stickers = null;
         List<Date> checkedDates = null;
         try {
-            Log.d("unja66", "board:"+board);
-            Log.d("unja66", "board.boardId:"+board.boardId);
             checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
-            Log.d("unja66", "checkedDates:"+checkedDates);
             stickers = getStickersWithDates(checkedDates, board.stickerSize);
+            if (checkedDates.size() != board.stickerPos) {
+                Log.d("unja66", "Unexpected situation");
+                board.stickerPos = checkedDates.size();
+                BoardManager.getInstance(MainActivity.this).updateStickerPosition(board.boardId, board.stickerPos);
+                updateTitleBasedOnCurrentBoard();
+            }
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -193,7 +196,7 @@ public class MainActivity extends AppCompatActivity  {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String toastMessage = "축하합니. 완성한 스티커판은 ‘지난 칭찬 스티커판 보기’ 메뉴에서 확인할 수 있습니다";
+                        String toastMessage = "축하합니다. 완성한 스티커판은 ‘지난 칭찬 스티커판 보기’ 메뉴에서 확인할 수 있습니다";
                         Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
 
                         BoardManager.getInstance(MainActivity.this).getBoardEnded(board.boardId);
@@ -209,30 +212,50 @@ public class MainActivity extends AppCompatActivity  {
         Toast.makeText(MainActivity.this, "읽기 전용 모드입니다.", Toast.LENGTH_SHORT).show();
     }
 
-    private void removeTheSelectedStikcer(int pos_in_adapter) {
+    private void removeTheSelectedSticker(int pos_in_adapter) {
         if (isReadOnlyMode) {
             notifyReadMode();
             return;
         }
 
-
         String deletedItemDate = StickerHistoryManager.getInstance(MainActivity.this).removeStickerAtAndReturnDateString(board.boardId, pos_in_adapter);
-        Log.d("unja", "deleted item's date: "+deletedItemDate);
+        Log.d("unja66", "deleted item's date: "+deletedItemDate);
 
-        board.stickerPos = board.stickerPos - 1;
-        BoardManager.getInstance(MainActivity.this).updateStickerPosition(board.boardId, board.stickerPos);
-        // First of all, I need to remove the selected sticker from stickers.
-        Log.d("unja66", "before: "+stickerRecyclerAdapter.stickers);
-        Log.d("unja66", "length: "+stickerRecyclerAdapter.stickers.size());
-        stickerRecyclerAdapter.stickers.remove(pos_in_adapter);
-        stickerRecyclerAdapter.stickers.add(new Sticker());
-        Log.d("unja66", "length: "+stickerRecyclerAdapter.stickers.size());
-        Log.d("unja66", "after: "+stickerRecyclerAdapter.stickers);
+        if (deletedItemDate == null) {
+            Log.d("unja66", "Error: Unexepected Result: there was no item for the removal");
+            return;
+        } else {
+            List checkedDates = null;
+            try {
+                checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
+                List<Sticker> stickers = getStickersWithDates(checkedDates, board.stickerSize);
+                board.stickerPos = checkedDates.size();
+                BoardManager.getInstance(MainActivity.this).updateStickerPosition(board.boardId, board.stickerPos);
+                stickerRecyclerAdapter.stickers = stickers;
+                updateTitleBasedOnCurrentBoard();
+                stickerRecyclerAdapter.notifyDataSetChanged();
+                Toast.makeText(MainActivity.this, "저런 ...\n" + "스티커 1개가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
 
-        updateTitleBasedOnCurrentBoard();
-        stickerRecyclerAdapter.notifyDataSetChanged();
-        Toast.makeText(MainActivity.this, "저런 ...\n" + "스티커 1개가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+
+//        board.stickerPos = board.stickerPos - 1;
+//        BoardManager.getInstance(MainActivity.this).updateStickerPosition(board.boardId, board.stickerPos);
+//        // First of all, I need to remove the selected sticker from stickers.
+//        Log.d("unja66", "before: "+stickerRecyclerAdapter.stickers);
+//        Log.d("unja66", "length: "+stickerRecyclerAdapter.stickers.size());
+//        stickerRecyclerAdapter.stickers.remove(pos_in_adapter);
+//        stickerRecyclerAdapter.stickers.add(new Sticker());
+//        Log.d("unja66", "length: "+stickerRecyclerAdapter.stickers.size());
+//        Log.d("unja66", "after: "+stickerRecyclerAdapter.stickers);
+//
+//
+//        updateTitleBasedOnCurrentBoard();
+//        stickerRecyclerAdapter.notifyDataSetChanged();
+//        Toast.makeText(MainActivity.this, "저런 ...\n" + "스티커 1개가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void updateTitleBasedOnCurrentBoard() {
@@ -325,7 +348,7 @@ public class MainActivity extends AppCompatActivity  {
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        removeTheSelectedStikcer(pos_in_adapter);
+                        removeTheSelectedSticker(pos_in_adapter);
                     }
                 })
                 .setNegativeButton("No", null)
@@ -394,7 +417,7 @@ public class MainActivity extends AppCompatActivity  {
         }
 
         public void addNewSticker(int board_id) {
-            Log.d("unja66", "added new sticker to : "+board.toString());
+//            Log.d("unja66", "added new sticker to : "+board.toString());
             board.stickerPos = board.stickerPos + 1;
             if (stickers.size() <= (board.stickerPos - 1)) {
                 board.stickerPos = stickers.size();
