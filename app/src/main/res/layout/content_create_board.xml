@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:hint="스티커는 몇 개까지 만들까? (최대 100개)." />
+            android:hint="스티커는 몇 개까지 만들까요? (최대 100개)." />
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout android:orientation="horizontal"

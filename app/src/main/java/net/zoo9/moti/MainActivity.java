@@ -1,5 +1,6 @@
 package net.zoo9.moti;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -92,6 +93,10 @@ public class MainActivity extends AppCompatActivity  {
         List<Date> checkedDates = null;
         try {
             checkedDates = StickerHistoryManager.getInstance(getApplicationContext()).getStickerHistories(board.boardId);
+            if (board.stickerSize == null) {
+                Log.e("unja66", "board's stickerSize should be existed. But, we cannot access the board.");
+                finish();
+            }
             stickers = getStickersWithDates(checkedDates, board.stickerSize);
             if (checkedDates.size() != board.stickerPos) {
                 Log.d("unja66", "Unexpected situation");
@@ -177,7 +182,6 @@ public class MainActivity extends AppCompatActivity  {
             if (board.stickerPos == board.stickerSize) {
                 showMeesageForCompletion();
             } else {
-
                 Toast.makeText(MainActivity.this, "참! 잘했어요.\n" + "스티커 1개가 추가되었습니다.", Toast.LENGTH_SHORT).show();
             }
         } else {
@@ -240,22 +244,6 @@ public class MainActivity extends AppCompatActivity  {
             }
         }
 
-
-
-//        board.stickerPos = board.stickerPos - 1;
-//        BoardManager.getInstance(MainActivity.this).updateStickerPosition(board.boardId, board.stickerPos);
-//        // First of all, I need to remove the selected sticker from stickers.
-//        Log.d("unja66", "before: "+stickerRecyclerAdapter.stickers);
-//        Log.d("unja66", "length: "+stickerRecyclerAdapter.stickers.size());
-//        stickerRecyclerAdapter.stickers.remove(pos_in_adapter);
-//        stickerRecyclerAdapter.stickers.add(new Sticker());
-//        Log.d("unja66", "length: "+stickerRecyclerAdapter.stickers.size());
-//        Log.d("unja66", "after: "+stickerRecyclerAdapter.stickers);
-//
-//
-//        updateTitleBasedOnCurrentBoard();
-//        stickerRecyclerAdapter.notifyDataSetChanged();
-//        Toast.makeText(MainActivity.this, "저런 ...\n" + "스티커 1개가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void updateTitleBasedOnCurrentBoard() {
@@ -465,6 +453,7 @@ public class MainActivity extends AppCompatActivity  {
                             BoardManager.getInstance(MainActivity.this).removeBoard(board.boardId);
                             Intent iWannaGoToCreateActivity = new Intent(MainActivity.this, GuideForCreationActivity.class);
                             startActivity(iWannaGoToCreateActivity);
+                            finish();
                         }
 
                     })
@@ -479,8 +468,9 @@ public class MainActivity extends AppCompatActivity  {
         } else if (id == R.id.tips) {
             startActivity(new Intent(this, TipActivity.class));
             return true;
-        } else if (id == R.id.action_manange_alerts)
+        } else if (id == R.id.action_manange_alerts) {
             startActivity(new Intent(this, ManageAlertsActivity.class));
+        }
 
         return super.onOptionsItemSelected(item);
     }

@@ -8,7 +8,7 @@ import java.util.Date;
 public class Board {
     public int boardId;
     public String userName;
-    public Integer stickerSize;
+    public Integer stickerSize = new Integer(0);
     public String listOfGoals;
     public String prize;
     public int stickerPos; // 최종 스티커 위치를 나타내는 값. 아무것도 없으면 0, 1개 붙었으면 1.
