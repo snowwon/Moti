@@ -48,8 +48,8 @@ public class MyRemindMessageReceiver extends BroadcastReceiver{
         mCompatBuilder.setTicker("Moti 알림");
         mCompatBuilder.setWhen(System.currentTimeMillis());
         mCompatBuilder.setNumber(10);
-        mCompatBuilder.setContentTitle("오늘도 우리 아이 칭찬~");
-        mCompatBuilder.setContentText("오늘도 우리 아이 좋은 습관 칭찬해주세요 ^^");
+        mCompatBuilder.setContentTitle("오늘도 칭찬 ~");
+        mCompatBuilder.setContentText("오늘의 좋은 습관을 칭찬해주세요 ^^");
         mCompatBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
         mCompatBuilder.setContentIntent(pendingIntent);
         mCompatBuilder.setAutoCancel(true);
