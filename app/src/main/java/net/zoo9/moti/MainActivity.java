@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity  {
         new AlertDialog.Builder(MainActivity.this)
                 .setIcon(null)
                 .setTitle("스티커 추가")
-                .setMessage("스트커를 추가하시겠습니까?")
+                .setMessage("스티커를 추가하시겠습니까?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener()
                 {
                     @Override
